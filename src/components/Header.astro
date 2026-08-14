@@ -75,8 +75,9 @@ const nav = [
     border-bottom-color: var(--line);
   }
 
-  /* Three tracks so the lockup sits on the true centre of the page,
-     regardless of how wide the nav or the actions happen to be. */
+  /* Three tracks: lockup left, nav on the true centre of the page, actions
+     right. The outer tracks are equal so the nav stays centred even though
+     the two sides carry different amounts of content. */
   .hdr-in {
     max-width: var(--maxw);
     margin-inline: auto;
@@ -106,8 +107,11 @@ const nav = [
 
   .brand {
     --bs: 1;
-    grid-column: 2;
+    grid-column: 1;
+    justify-self: start;
     display: grid;
+    /* The mark is centred over the wordmark inside the lockup itself, so the
+       block is positioned left without breaking its internal alignment. */
     justify-items: center;
     gap: calc(0.3rem * var(--bs));
     text-align: center;
@@ -161,10 +165,11 @@ const nav = [
   }
 
   .nav {
-    grid-column: 1;
-    justify-self: start;
+    grid-column: 2;
+    justify-self: center;
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 0.6rem 1.5rem;
   }
 
@@ -310,12 +315,16 @@ const nav = [
     .hdr-act {
       display: none;
     }
-    .burger {
-      display: grid;
-      grid-column: 1;
-      justify-self: start;
+    .hdr-in {
+      grid-template-columns: 1fr auto auto;
+      gap: 0.5rem;
     }
     .tel-m {
+      display: grid;
+      grid-column: 2;
+      justify-self: end;
+    }
+    .burger {
       display: grid;
       grid-column: 3;
       justify-self: end;
