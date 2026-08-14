@@ -1,6 +1,6 @@
 ---
 import { Image } from 'astro:assets';
-import chalk from '../assets/gen/setout-chalkline.webp';
+import chalk from '../assets/gen/setout-chalkline-wide.webp';
 ---
 
 <section class="thesis section" id="thesis" data-reveal>
@@ -36,7 +36,7 @@ import chalk from '../assets/gen/setout-chalkline.webp';
     <Image
       src={chalk}
       alt="A chalk line being snapped across a subfloor, leaving a straight yellow setout mark"
-      widths={[900, 1400, 2000]}
+      widths={[1200, 2000, 2800]}
       sizes="100vw"
       quality={78}
     />
@@ -78,7 +78,9 @@ import chalk from '../assets/gen/setout-chalkline.webp';
 
   .thesis-fig :global(img) {
     width: 100%;
-    height: clamp(260px, 48vw, 620px);
+    aspect-ratio: 21 / 9;
+    height: auto;
+    max-height: 76vh;
     object-fit: cover;
   }
 

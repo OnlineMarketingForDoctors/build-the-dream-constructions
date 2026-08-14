@@ -7,8 +7,8 @@ import CtaBand from '../components/CtaBand.astro';
 import Footer from '../components/Footer.astro';
 import heroImg from '../assets/pages/hero-about.webp';
 import billPortrait from '../assets/bill-chen.webp';
-import billOnsite from '../assets/bill-onsite.webp';
-import billWide from '../assets/bill-onsite-wide.webp';
+import billPlans from '../assets/bill-plans-wide.webp';
+import billBanner from '../assets/bill-banner-wide.webp';
 import craftLevel from '../assets/pages/craft-levelling.webp';
 import craftWater from '../assets/pages/craft-waterproof.webp';
 import craftSil from '../assets/pages/craft-silicone.webp';
@@ -55,7 +55,7 @@ const craft = [craftLevel, craftWater, craftSil];
       </div>
 
       <figure class="band rise rise-3">
-        <Image src={billWide} alt={`${business.founder} on site in an unfinished interior`} widths={[1200, 2000]} sizes="100vw" quality={80} />
+        <Image src={billBanner} alt={`${business.founder} on site in an unfinished interior`} widths={[1200, 2000, 2800]} sizes="100vw" quality={80} />
         <figcaption class="annot"><span class="annot-signal">On site</span> · {business.founder}</figcaption>
       </figure>
     </section>
@@ -151,8 +151,8 @@ const craft = [craftLevel, craftWater, craftSil];
         </div>
       </div>
 
-      <figure class="band band-short rise rise-3">
-        <Image src={billOnsite} alt={`${business.founder} holding plans in a part finished room`} widths={[1000, 1600]} sizes="100vw" quality={80} />
+      <figure class="band rise rise-3">
+        <Image src={billPlans} alt={`${business.founder} holding plans in a part finished room`} widths={[1200, 2000, 2800]} sizes="100vw" quality={80} />
       </figure>
     </section>
 
@@ -181,14 +181,14 @@ const craft = [craftLevel, craftWater, craftSil];
     position: relative;
   }
 
+  /* Banner images are generated at 21:9 and displayed at 21:9, so nothing is
+     cropped. Only the max-height guard bites, and only on very wide screens. */
   .band :global(img) {
     width: 100%;
-    height: clamp(260px, 44vw, 560px);
+    aspect-ratio: 21 / 9;
+    height: auto;
+    max-height: 76vh;
     object-fit: cover;
-  }
-
-  .band-short :global(img) {
-    height: clamp(220px, 32vw, 420px);
   }
 
   .band figcaption {
