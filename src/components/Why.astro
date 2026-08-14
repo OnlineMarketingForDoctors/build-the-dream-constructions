@@ -24,7 +24,7 @@ import { promises, business } from '../data/site.js';
           </p>
 
           <figure class="founder rise rise-3">
-            <Image src={bill} alt={`${business.founder}, founder of ${business.name}`} widths={[220, 440]} sizes="220px" quality={82} />
+            <Image src={bill} alt={`${business.founder}, founder of ${business.name}`} widths={[280, 560]} sizes="140px" quality={84} />
             <figcaption>
               <span class="annot annot-signal">Founder</span>
               <span class="founder-name">{business.founder}</span>
@@ -87,12 +87,13 @@ import { promises, business } from '../data/site.js';
     gap: 1.125rem;
   }
 
+  /* The portrait is now shot to the palette, so it no longer needs the
+     desaturation that was compensating for a daylight snapshot. */
   .founder :global(img) {
-    width: 110px;
-    height: 138px;
+    width: 140px;
+    height: 175px;
     object-fit: cover;
-    object-position: 50% 22%;
-    filter: grayscale(0.25) contrast(1.05);
+    object-position: 50% 30%;
   }
 
   .founder figcaption {
