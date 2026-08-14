@@ -64,28 +64,28 @@ export const services = [
 export const promises = [
   {
     label: 'Accountability',
-    title: 'One contract. One phone number.',
-    body: 'A kitchen needs a chippy, a tiler, a floorer, a plumber and a sparky. Most people have either tried to coordinate that themselves or watched five trades blame each other. You deal with us. We deal with them.',
+    title: 'One contract, not five.',
+    body: 'You sign one contract with us rather than separate agreements with each trade. If two trades disagree about whose work is at fault, sorting that out is our job, not yours.',
   },
   {
     label: 'Cost',
     title: 'Nothing changes without a written variation.',
-    body: 'Every quote is fixed. If something behind the wall changes the job, work stops, you get the problem and the cost in writing, and nothing continues until you approve it. That is a mechanism, not a promise.',
+    body: 'Every quote is fixed. If something behind the wall changes the job, we stop, put the problem and the cost in writing, and wait for you to approve it before carrying on.',
   },
   {
     label: 'Communication',
     title: 'A message every morning.',
-    body: 'Before the day starts you know who is arriving, what they are doing and what happens tomorrow. It costs us nothing and it is the thing our clients mention first.',
+    body: 'Before the day starts you get a message telling you who is coming, what they are doing, and what is planned for the next day.',
   },
   {
     label: 'Livability',
     title: 'You keep living in your house.',
-    body: 'Kitchens staged so you keep a working sink and bench for most of the build. One bathroom kept running. Dust barriers up, and the site swept at the end of every day.',
+    body: 'We stage kitchens so you keep a working sink and bench for most of the build, keep one bathroom running, put dust barriers up, and sweep the site at the end of every day.',
   },
   {
     label: 'Preparation',
-    title: 'The part you will never see.',
-    body: 'Subfloors levelled, walls checked for plumb, waterproofing certified, setout marked before a single board is laid. Cheap quotes save their money here, and it shows in year three rather than week one.',
+    title: 'Preparation before finishes.',
+    body: 'We level subfloors, check walls for plumb, certify waterproofing and set the job out before anything is laid. A cheaper quote usually skips this, and the result tends to show up a few years later rather than straight away.',
   },
 ];
 
