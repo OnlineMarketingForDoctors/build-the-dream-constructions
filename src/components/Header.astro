@@ -1,0 +1,281 @@
+---
+import { Image } from 'astro:assets';
+import mark from '../assets/brand/logo-mark.png';
+import { business } from '../data/site.js';
+
+const nav = [
+  { label: 'Services', href: '#services' },
+  { label: 'Why us', href: '#why' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'Process', href: '#process' },
+  { label: 'Areas', href: '#areas' },
+];
+---
+
+<header class="hdr" id="hdr">
+  <div class="hdr-in">
+    <a class="brand" href="/" aria-label={`${business.name}, home`}>
+      <Image src={mark} alt="" width={38} densities={[1, 2]} />
+      <span class="brand-txt">
+        <span class="brand-1">Build the</span>
+        <span class="brand-2">Dream</span>
+      </span>
+    </a>
+
+    <nav class="nav" aria-label="Primary">
+      {nav.map((i) => (
+        <a href={i.href}>{i.label}</a>
+      ))}
+    </nav>
+
+    <div class="hdr-act">
+      <a class="tel" href={business.phoneHref}>
+        <span class="tel-dot" aria-hidden="true"></span>
+        {business.phone}
+      </a>
+      <a class="btn hdr-cta" href="#quote"><span>Request a quote</span><i class="btn-arrow"></i></a>
+      <button class="burger" type="button" aria-expanded="false" aria-controls="mnav" aria-label="Open menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mnav" id="mnav" hidden>
+    {nav.map((i) => (
+      <a href={i.href}>{i.label}</a>
+    ))}
+    <a class="mnav-cta" href="#quote">Request a quote</a>
+    <a class="mnav-tel" href={business.phoneHref}>{business.phone}</a>
+  </div>
+</header>
+
+<style>
+  .hdr {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 100;
+    transition: background 0.45s var(--ease), border-color 0.45s var(--ease);
+    border-bottom: 1px solid transparent;
+  }
+
+  .hdr.is-stuck {
+    background: color-mix(in srgb, var(--ink) 88%, transparent);
+    backdrop-filter: blur(14px);
+    border-bottom-color: var(--line);
+  }
+
+  .hdr-in {
+    max-width: var(--maxw);
+    margin-inline: auto;
+    padding: 1rem var(--pad-x);
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    flex: 0 0 auto;
+  }
+
+  .brand-txt {
+    display: grid;
+    line-height: 0.92;
+    font-family: var(--display);
+    text-transform: uppercase;
+  }
+
+  .brand-1 {
+    font-variation-settings: 'wdth' 100, 'wght' 600;
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    color: var(--signal);
+  }
+
+  .brand-2 {
+    font-variation-settings: 'wdth' 112, 'wght' 800;
+    font-size: 1.0625rem;
+    letter-spacing: 0.005em;
+  }
+
+  .nav {
+    display: flex;
+    gap: 1.75rem;
+    margin-inline: auto;
+  }
+
+  .nav a {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--bone-2);
+    padding-block: 0.35rem;
+    position: relative;
+    transition: color 0.3s var(--ease);
+  }
+
+  .nav a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: var(--signal);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s var(--ease-snap);
+  }
+
+  .nav a:hover,
+  .nav a:focus-visible {
+    color: var(--bone);
+  }
+
+  .nav a:hover::after,
+  .nav a:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .hdr-act {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex: 0 0 auto;
+  }
+
+  .tel {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-family: var(--mono);
+    font-size: 0.8125rem;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  .tel-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--signal);
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--signal) 70%, transparent);
+    animation: pulse 2.8s infinite;
+  }
+
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--signal) 60%, transparent); }
+    70% { box-shadow: 0 0 0 9px transparent; }
+    100% { box-shadow: 0 0 0 0 transparent; }
+  }
+
+  .hdr-cta {
+    padding: 0.8125rem 1.25rem;
+    font-size: 0.6875rem;
+  }
+
+  .burger {
+    display: none;
+    width: 40px;
+    height: 40px;
+    background: none;
+    border: 1px solid var(--line-lift);
+    cursor: pointer;
+    padding: 0;
+    place-content: center;
+    gap: 5px;
+  }
+
+  .burger span {
+    display: block;
+    width: 16px;
+    height: 1.5px;
+    background: var(--bone);
+    margin-inline: auto;
+    transition: transform 0.35s var(--ease), opacity 0.2s;
+  }
+
+  .burger[aria-expanded='true'] span:first-child {
+    transform: translateY(3.25px) rotate(45deg);
+  }
+
+  .burger[aria-expanded='true'] span:last-child {
+    transform: translateY(-3.25px) rotate(-45deg);
+  }
+
+  /* Never shown on desktop, and the hidden attribute must win over display. */
+  .mnav {
+    display: none;
+    gap: 0.25rem;
+    padding: 1rem var(--pad-x) 2rem;
+    background: var(--charcoal);
+    border-top: 1px solid var(--line);
+  }
+
+  .mnav a {
+    font-family: var(--display);
+    font-variation-settings: 'wdth' 106, 'wght' 700;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    padding-block: 0.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .mnav-cta {
+    color: var(--signal);
+  }
+
+  .mnav-tel {
+    font-family: var(--mono) !important;
+    font-size: 1rem !important;
+    border-bottom: 0 !important;
+    color: var(--bone-2);
+  }
+
+  @media (max-width: 1080px) {
+    .nav,
+    .hdr-cta,
+    .tel {
+      display: none;
+    }
+    .burger {
+      display: grid;
+    }
+    .mnav:not([hidden]) {
+      display: grid;
+    }
+    .hdr-in {
+      justify-content: space-between;
+    }
+    .hdr {
+      background: color-mix(in srgb, var(--ink) 88%, transparent);
+      backdrop-filter: blur(14px);
+    }
+  }
+</style>
+
+<script>
+  const hdr = document.getElementById('hdr');
+  const burger = hdr?.querySelector('.burger');
+  const mnav = document.getElementById('mnav');
+
+  const onScroll = () => hdr?.classList.toggle('is-stuck', window.scrollY > 24);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  burger?.addEventListener('click', () => {
+    const open = burger.getAttribute('aria-expanded') === 'true';
+    burger.setAttribute('aria-expanded', String(!open));
+    if (mnav) mnav.hidden = open;
+  });
+
+  mnav?.querySelectorAll('a').forEach((a) =>
+    a.addEventListener('click', () => {
+      burger?.setAttribute('aria-expanded', 'false');
+      if (mnav) mnav.hidden = true;
+    }),
+  );
+</script>

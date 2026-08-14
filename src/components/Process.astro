@@ -1,0 +1,198 @@
+---
+import { process } from '../data/site.js';
+---
+
+<section class="prc section" id="process" data-reveal>
+  <div class="shell">
+    <div class="setout">
+      <span class="annot">06 / What happens</span>
+      <span class="setout-rule"></span>
+    </div>
+
+    <div class="prc-head">
+      <h2 class="display display-l rise">From the first<br />visit to handover.</h2>
+      <p class="lede rise rise-2">
+        Five steps, in order, every time. The numbering here is real: each stage
+        has to finish before the next one starts.
+      </p>
+    </div>
+
+    <ol class="prc-list">
+      <span class="prc-spine" aria-hidden="true"><i></i></span>
+      {process.map((s) => (
+        <li class="step" data-reveal>
+          <span class="step-n display">{s.n}</span>
+          <span class="step-dot" aria-hidden="true"></span>
+          <div class="step-body">
+            <h3 class="display step-title">{s.title}</h3>
+            <p class="step-txt">{s.body}</p>
+          </div>
+          <span class="annot step-meta">{s.meta}</span>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .prc-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: end;
+    margin-bottom: clamp(2.5rem, 5vw, 4.5rem);
+  }
+
+  .prc-head .lede {
+    max-width: 44ch;
+  }
+
+  .prc-list {
+    position: relative;
+    display: grid;
+  }
+
+  /* The spine is the setout line for the sequence. It fills as you read. */
+  .prc-spine {
+    position: absolute;
+    left: 5.25rem;
+    top: 0.75rem;
+    bottom: 0.75rem;
+    width: 1px;
+    background: var(--line);
+  }
+
+  .prc-spine i {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 1px;
+    background: var(--signal);
+    transform: scaleY(var(--fill, 0));
+    transform-origin: top;
+    transition: transform 0.25s linear;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 4rem 2.5rem minmax(0, 1fr) minmax(0, 15rem);
+    gap: 0 0;
+    align-items: start;
+    padding-block: clamp(1.5rem, 3.2vw, 2.5rem);
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+  }
+
+  .step.is-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  .step-n {
+    font-variation-settings: 'wdth' 112, 'wght' 800;
+    font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+    color: var(--line-lift);
+    line-height: 1;
+    padding-top: 0.1em;
+  }
+
+  .step.is-in .step-n {
+    color: var(--bone);
+    transition: color 0.6s var(--ease) 0.2s;
+  }
+
+  .step-dot {
+    width: 9px;
+    height: 9px;
+    background: var(--ink);
+    border: 1px solid var(--line-lift);
+    margin: 0.55rem auto 0;
+    transform: rotate(45deg);
+    transition: background 0.5s var(--ease), border-color 0.5s var(--ease);
+  }
+
+  .step.is-in .step-dot {
+    background: var(--signal);
+    border-color: var(--signal);
+  }
+
+  .step-body {
+    padding-left: clamp(0.75rem, 2vw, 2rem);
+    display: grid;
+    gap: 0.6rem;
+    max-width: 62ch;
+  }
+
+  .step-title {
+    font-variation-settings: 'wdth' 100, 'wght' 700;
+    font-size: clamp(1.1875rem, 1.9vw, 1.75rem);
+    text-transform: none;
+    letter-spacing: -0.015em;
+    line-height: 1.12;
+  }
+
+  .step-txt {
+    color: var(--bone-2);
+    font-size: 0.9375rem;
+    line-height: 1.62;
+  }
+
+  .step-meta {
+    color: var(--signal);
+    text-align: right;
+    padding-top: 0.65rem;
+    line-height: 1.6;
+  }
+
+  @media (max-width: 760px) {
+    .prc-head {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .prc-spine {
+      left: 3.1rem;
+    }
+    .step {
+      grid-template-columns: 2.5rem 1.25rem minmax(0, 1fr);
+    }
+    .step-n {
+      font-size: 1.25rem;
+    }
+    .step-meta {
+      grid-column: 3;
+      text-align: left;
+      padding: 0.6rem 0 0 clamp(0.75rem, 2vw, 2rem);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .step {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<script>
+  const list = document.querySelector('.prc-list');
+  const fill = list?.querySelector('.prc-spine i');
+  if (list && fill && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let ticking = false;
+    const update = () => {
+      const r = list.getBoundingClientRect();
+      const vh = window.innerHeight;
+      const p = (vh * 0.72 - r.top) / r.height;
+      fill.style.setProperty('--fill', String(Math.max(0, Math.min(1, p))));
+      ticking = false;
+    };
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(update);
+      }
+    };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+  }
+</script>

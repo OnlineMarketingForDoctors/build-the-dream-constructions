@@ -1,0 +1,241 @@
+---
+import { serviceAreas } from '../data/site.js';
+const total = serviceAreas.reduce((n, r) => n + r.suburbs.length, 0);
+---
+
+<section class="area section" id="areas" data-reveal>
+  <div class="shell">
+    <div class="setout">
+      <span class="annot">07 / Where we work</span>
+      <span class="setout-rule"></span>
+    </div>
+
+    <div class="area-head">
+      <h2 class="display display-l rise">Sydney,<br />and out to the edges.</h2>
+      <div class="area-tools rise rise-2">
+        <p class="lede">
+          {total} suburbs across ten regions. Type yours in to check, or scan the
+          list below.
+        </p>
+        <div class="finder">
+          <label class="annot" for="suburb">Find your suburb</label>
+          <div class="finder-in">
+            <input id="suburb" type="search" placeholder="Start typing" autocomplete="off" spellcheck="false" />
+            <span class="finder-rule"></span>
+          </div>
+          <p class="finder-out annot" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="area-cols rise rise-3">
+      {serviceAreas.map((r) => (
+        <div class="area-col" data-region={r.region}>
+          <h3 class="area-region display">{r.region}</h3>
+          <ul>
+            {r.suburbs.map((s) => (
+              <li data-suburb={s.toLowerCase()}>{s}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <p class="area-note annot rise">
+      Not on the list? Call <a href="tel:+61425351578">0425 351 578</a>. If we can
+      get a team there, we will tell you straight away.
+    </p>
+  </div>
+</section>
+
+<style>
+  .area-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: end;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .area-tools {
+    display: grid;
+    gap: 1.75rem;
+  }
+
+  .area-tools .lede {
+    max-width: 42ch;
+  }
+
+  .finder {
+    display: grid;
+    gap: 0.6rem;
+    max-width: 26rem;
+  }
+
+  .finder-in {
+    position: relative;
+  }
+
+  .finder input {
+    width: 100%;
+    background: none;
+    border: 0;
+    border-bottom: 1px solid var(--line-lift);
+    padding: 0.6rem 0;
+    color: var(--bone);
+    font-family: var(--display);
+    font-variation-settings: 'wdth' 104, 'wght' 600;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: 0.01em;
+  }
+
+  .finder input::placeholder {
+    color: var(--muted);
+    text-transform: none;
+    font-variation-settings: 'wdth' 100, 'wght' 400;
+    letter-spacing: 0;
+  }
+
+  .finder input:focus {
+    outline: none;
+  }
+
+  .finder-rule {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 100%;
+    background: var(--signal);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.45s var(--ease-snap);
+  }
+
+  .finder input:focus ~ .finder-rule {
+    transform: scaleX(1);
+  }
+
+  .finder-out {
+    min-height: 1.2em;
+    color: var(--bone-2);
+  }
+
+  .finder-out.is-hit {
+    color: var(--signal);
+  }
+
+  .area-cols {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: clamp(1.5rem, 2.5vw, 2.5rem) clamp(1rem, 2vw, 2rem);
+    padding-top: clamp(1.5rem, 3vw, 2.5rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .area-region {
+    font-variation-settings: 'wdth' 100, 'wght' 700;
+    font-size: 0.8125rem;
+    letter-spacing: 0.11em;
+    text-transform: uppercase;
+    color: var(--signal);
+    margin-bottom: 1rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .area-col li {
+    font-size: 0.875rem;
+    line-height: 1.85;
+    color: var(--bone-2);
+    transition: color 0.25s var(--ease), opacity 0.25s var(--ease);
+  }
+
+  .area-col.is-dim {
+    opacity: 0.28;
+  }
+
+  .area-col li.is-hit {
+    color: var(--signal);
+  }
+
+  .area-col li.is-off {
+    opacity: 0.2;
+  }
+
+  .area-note {
+    margin-top: clamp(2rem, 4vw, 3rem);
+    color: var(--muted);
+    text-transform: none;
+    letter-spacing: 0.02em;
+    font-size: 0.8125rem;
+  }
+
+  .area-note a {
+    color: var(--signal);
+    border-bottom: 1px solid currentColor;
+  }
+
+  @media (max-width: 1180px) {
+    .area-cols {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 860px) {
+    .area-head {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+    .area-cols {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .area-cols {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const input = document.getElementById('suburb');
+  const out = document.querySelector('.finder-out');
+  const cols = [...document.querySelectorAll('.area-col')];
+  const items = [...document.querySelectorAll('.area-col li')];
+
+  if (input && out) {
+    input.addEventListener('input', () => {
+      const q = input.value.trim().toLowerCase();
+
+      if (!q) {
+        items.forEach((li) => li.classList.remove('is-hit', 'is-off'));
+        cols.forEach((c) => c.classList.remove('is-dim'));
+        out.textContent = '';
+        out.classList.remove('is-hit');
+        return;
+      }
+
+      let hits = 0;
+      let region = '';
+      items.forEach((li) => {
+        const match = li.dataset.suburb.includes(q);
+        li.classList.toggle('is-hit', match);
+        li.classList.toggle('is-off', !match);
+        if (match) {
+          hits += 1;
+          if (!region) region = li.closest('.area-col').dataset.region;
+        }
+      });
+
+      cols.forEach((c) => c.classList.toggle('is-dim', !c.querySelector('li.is-hit')));
+
+      out.classList.toggle('is-hit', hits > 0);
+      out.textContent = hits
+        ? `Yes, we cover that. ${hits === 1 ? region : `${hits} matches`}`
+        : 'Not on the list. Give us a call and we will check.';
+    });
+  }
+</script>

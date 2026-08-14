@@ -1,0 +1,254 @@
+---
+import { Image } from 'astro:assets';
+import mdlmMain from '../assets/projects/mdlm-wide-a.webp';
+import mdlmA from '../assets/projects/mdlm-bedroom.webp';
+import mdlmB from '../assets/projects/mdlm-detail.webp';
+import mdlmC from '../assets/projects/mdlm-wide-b.webp';
+import omdMain from '../assets/projects/omd-reception.webp';
+import omdA from '../assets/projects/omd-meeting-room.webp';
+import omdB from '../assets/projects/omd-lounge.webp';
+import omdC from '../assets/projects/omd-bathroom.webp';
+
+const items = [
+  {
+    name: 'Maison De La Mer',
+    kind: 'Full apartment renovation',
+    meta: [
+      ['Scope', 'Kitchen, flooring, joinery, panelling'],
+      ['Duration', 'Twelve months'],
+      ['Finish', 'Custom throughout'],
+    ],
+    blurb:
+      'An absolute beachfront apartment taken back to structure and rebuilt over twelve months. Every piece of joinery was made to a single design theme, with a mitred stone island, full height wall panelling and engineered timber running through the whole floor plan.',
+    main: { src: mdlmMain, alt: 'Renovated open plan living area with custom joinery and timber flooring', tag: 'Completed' },
+    strip: [
+      { src: mdlmA, alt: 'Main bedroom with panelled walls and custom bedheads', tag: 'Completed' },
+      { src: mdlmB, alt: 'Interior detail of custom joinery and lighting', tag: 'Completed' },
+      { src: mdlmC, alt: 'Living space looking toward the balcony', tag: 'Completed' },
+    ],
+  },
+  {
+    name: 'Commercial Office Fit Out',
+    kind: 'Sydney',
+    meta: [
+      ['Scope', 'Joinery, tiling, panelling, bathroom'],
+      ['Type', 'Commercial'],
+      ['Built from', 'Approved renders'],
+    ],
+    blurb:
+      'A Sydney office taken from design visualisation through to completed fit out. Panelled meeting rooms, patterned floor tiling and full custom joinery. The renders and the finished rooms sit side by side below, which is the fairest way to show how closely a build tracks its drawings.',
+    main: { src: omdMain, alt: 'Completed office reception and meeting area with custom joinery', tag: 'Completed' },
+    strip: [
+      { src: omdA, alt: 'Design visualisation of the panelled green meeting room', tag: 'Visualisation' },
+      { src: omdB, alt: 'The completed meeting area with cane seating and panelled walls', tag: 'Completed' },
+      { src: omdC, alt: 'Design visualisation of the office bathroom tiling', tag: 'Visualisation' },
+    ],
+  },
+];
+---
+
+<section class="prj section" id="projects" data-reveal>
+  <div class="shell">
+    <div class="setout">
+      <span class="annot">04 / Selected work</span>
+      <span class="setout-rule"></span>
+    </div>
+    <div class="prj-head">
+      <h2 class="display display-l rise">Two jobs,<br />shown in full.</h2>
+      <p class="lede rise rise-2">
+        Rather than a wall of thumbnails, here are two projects with the scope
+        written out. Every photograph below is our own work.
+      </p>
+    </div>
+  </div>
+
+  {items.map((p, idx) => (
+    <article class={`prj-item ${idx % 2 ? 'is-alt' : ''}`} data-reveal>
+      <div class="prj-main rise">
+        <Image src={p.main.src} alt={p.main.alt} widths={[800, 1300, 1900]} sizes="(max-width: 980px) 100vw, 62vw" quality={80} />
+        <span class="tag">{p.main.tag}</span>
+      </div>
+
+      <div class="prj-info shell-pad">
+        <p class="annot rise">{p.kind}</p>
+        <h3 class="display display-m prj-name rise rise-2">{p.name}</h3>
+        <p class="prj-blurb rise rise-3">{p.blurb}</p>
+        <dl class="prj-meta rise rise-4">
+          {p.meta.map(([k, v]) => (
+            <div>
+              <dt class="annot">{k}</dt>
+              <dd>{v}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <ul class="prj-strip">
+        {p.strip.map((s) => (
+          <li>
+            <Image src={s.src} alt={s.alt} widths={[400, 760]} sizes="(max-width: 980px) 45vw, 22vw" quality={76} />
+            <span class={`tag ${s.tag === 'Visualisation' ? 'tag-vis' : ''}`}>{s.tag}</span>
+          </li>
+        ))}
+      </ul>
+    </article>
+  ))}
+</section>
+
+<style>
+  .prj-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: end;
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .prj-head .lede {
+    max-width: 44ch;
+  }
+
+  .prj-item {
+    display: grid;
+    grid-template-columns: 1.55fr 1fr;
+    grid-template-areas:
+      'main info'
+      'strip strip';
+    gap: var(--gap);
+    margin-bottom: clamp(3rem, 7vw, 6rem);
+  }
+
+  .prj-item.is-alt {
+    grid-template-columns: 1fr 1.55fr;
+    grid-template-areas:
+      'info main'
+      'strip strip';
+  }
+
+  .prj-main {
+    grid-area: main;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .prj-main :global(img) {
+    width: 100%;
+    height: clamp(300px, 46vw, 660px);
+    object-fit: cover;
+    transition: transform 1.3s var(--ease);
+  }
+
+  .prj-item:hover .prj-main :global(img) {
+    transform: scale(1.03);
+  }
+
+  .prj-info {
+    grid-area: info;
+    background: var(--surface);
+    padding: clamp(1.5rem, 3vw, 3rem);
+    display: grid;
+    align-content: center;
+    gap: 1rem;
+  }
+
+  .prj-name {
+    font-size: clamp(1.6rem, 2.6vw, 2.6rem);
+  }
+
+  .prj-blurb {
+    color: var(--bone-2);
+    font-size: 0.9375rem;
+    line-height: 1.62;
+    max-width: 48ch;
+  }
+
+  .prj-meta {
+    display: grid;
+    gap: 0.85rem;
+    margin: 0.5rem 0 0;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line-lift);
+  }
+
+  .prj-meta div {
+    display: grid;
+    grid-template-columns: 7rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+  }
+
+  .prj-meta dd {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--bone);
+  }
+
+  .prj-strip {
+    grid-area: strip;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--gap);
+  }
+
+  .prj-strip li {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .prj-strip :global(img) {
+    width: 100%;
+    height: clamp(150px, 20vw, 300px);
+    object-fit: cover;
+    transition: transform 1s var(--ease);
+  }
+
+  .prj-strip li:hover :global(img) {
+    transform: scale(1.05);
+  }
+
+  /* Renders are labelled as renders. A build photograph and a visualisation
+     are different claims and the page should not blur them. */
+  .tag {
+    position: absolute;
+    left: 0.75rem;
+    bottom: 0.75rem;
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.6rem;
+    background: color-mix(in srgb, var(--ink) 78%, transparent);
+    backdrop-filter: blur(6px);
+    color: var(--bone-2);
+    border-left: 2px solid var(--signal);
+  }
+
+  .tag-vis {
+    border-left-color: var(--muted);
+  }
+
+  @media (max-width: 980px) {
+    .prj-item,
+    .prj-item.is-alt {
+      grid-template-columns: 1fr;
+      grid-template-areas:
+        'main'
+        'info'
+        'strip';
+    }
+    .prj-head {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+  }
+
+  @media (max-width: 620px) {
+    .prj-strip {
+      grid-template-columns: repeat(3, 1fr);
+    }
+    .prj-meta div {
+      grid-template-columns: 1fr;
+      gap: 0.2rem;
+    }
+  }
+</style>

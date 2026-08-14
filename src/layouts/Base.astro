@@ -1,0 +1,83 @@
+---
+import '../styles/global.css';
+import { business } from '../data/site.js';
+
+const { title, description } = Astro.props;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'GeneralContractor',
+  name: business.name,
+  telephone: business.phone,
+  email: business.email,
+  foundingDate: String(business.founded),
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '907b/8 Cowper St',
+    addressLocality: 'Parramatta',
+    addressRegion: 'NSW',
+    postalCode: '2150',
+    addressCountry: 'AU',
+  },
+  areaServed: { '@type': 'City', name: 'Sydney' },
+  openingHours: 'Mo-Fr 09:00-18:00',
+};
+---
+
+<html lang="en-AU">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Site is not public yet. Remove these two lines, the robots.txt
+         disallow and the X-Robots-Tag header in vercel.json at launch. -->
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="googlebot" content="noindex, nofollow" />
+
+    <meta name="theme-color" content="#0c0d0e" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to content</a>
+    <slot />
+
+    <style>
+      .skip {
+        position: absolute;
+        left: -9999px;
+        top: 0;
+        z-index: 999;
+        background: var(--signal);
+        color: var(--ink);
+        padding: 0.75rem 1.25rem;
+        font-family: var(--mono);
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+      .skip:focus {
+        left: 1rem;
+        top: 1rem;
+      }
+    </style>
+
+    <script>
+      // Reveal on scroll. One observer for the whole page.
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (e.isIntersecting) {
+              e.target.classList.add('is-in');
+              io.unobserve(e.target);
+            }
+          }
+        },
+        { rootMargin: '0px 0px -12% 0px', threshold: 0.08 },
+      );
+      document.querySelectorAll('[data-reveal]').forEach((el) => io.observe(el));
+    </script>
+  </body>
+</html>

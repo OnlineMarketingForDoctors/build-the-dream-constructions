@@ -1,0 +1,215 @@
+---
+import { Image } from 'astro:assets';
+import bill from '../assets/bill-chen.webp';
+import level from '../assets/gen/setout-level.webp';
+import { promises, business } from '../data/site.js';
+---
+
+<section class="why section" id="why" data-reveal>
+  <div class="shell">
+    <div class="setout">
+      <span class="annot">03 / How we work</span>
+      <span class="setout-rule"></span>
+    </div>
+
+    <div class="why-grid">
+      <aside class="why-side">
+        <div class="why-sticky">
+          <h2 class="display display-l rise">
+            Renovation<br />horror stories<br />are about<br /><em>time and trust.</em>
+          </h2>
+          <p class="why-sub rise rise-2">
+            Not materials. So the things below are mechanisms rather than
+            adjectives. Each one is something you can hold us to.
+          </p>
+
+          <figure class="founder rise rise-3">
+            <Image src={bill} alt={`${business.founder}, founder of ${business.name}`} widths={[220, 440]} sizes="220px" quality={82} />
+            <figcaption>
+              <span class="annot annot-signal">Founder</span>
+              <span class="founder-name">{business.founder}</span>
+              <span class="founder-meta">Building since {business.founded}</span>
+            </figcaption>
+          </figure>
+        </div>
+      </aside>
+
+      <ol class="why-list">
+        {promises.map((p, i) => (
+          <li class="promise" data-reveal>
+            <span class="annot promise-label">{p.label}</span>
+            <div class="promise-main">
+              <h3 class="display promise-title">{p.title}</h3>
+              <p class="promise-body">{p.body}</p>
+            </div>
+            <span class="promise-n annot">{String(i + 1).padStart(2, '0')}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </div>
+
+  <figure class="why-fig rise">
+    <Image src={level} alt="The bubble of a spirit level sitting exactly between its gauge lines" widths={[900, 1500]} sizes="100vw" quality={78} />
+    <figcaption class="annot">
+      <span class="annot-signal">Level</span> · checked, not assumed
+    </figcaption>
+  </figure>
+</section>
+
+<style>
+  .why-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: clamp(2rem, 6vw, 6rem);
+  }
+
+  .why-sticky {
+    position: sticky;
+    top: 7rem;
+  }
+
+  .why-side h2 em {
+    font-style: normal;
+    color: var(--signal);
+  }
+
+  .why-sub {
+    margin-top: 1.5rem;
+    color: var(--bone-2);
+    max-width: 38ch;
+  }
+
+  .founder {
+    margin: clamp(2rem, 4vw, 3rem) 0 0;
+    display: flex;
+    align-items: flex-end;
+    gap: 1.125rem;
+  }
+
+  .founder :global(img) {
+    width: 110px;
+    height: 138px;
+    object-fit: cover;
+    object-position: 50% 22%;
+    filter: grayscale(0.25) contrast(1.05);
+  }
+
+  .founder figcaption {
+    display: grid;
+    gap: 0.35rem;
+    padding-bottom: 0.35rem;
+  }
+
+  .founder-name {
+    font-family: var(--display);
+    font-variation-settings: 'wdth' 106, 'wght' 750;
+    text-transform: uppercase;
+    font-size: 1.0625rem;
+  }
+
+  .founder-meta {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .why-list {
+    display: grid;
+    counter-reset: p;
+  }
+
+  .promise {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr auto;
+    gap: 1.5rem;
+    align-items: start;
+    padding-block: clamp(1.5rem, 3vw, 2.25rem);
+    border-top: 1px solid var(--line);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+  }
+
+  .promise.is-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  .promise:last-child {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .promise-label {
+    padding-top: 0.5rem;
+    color: var(--signal);
+  }
+
+  .promise-title {
+    font-variation-settings: 'wdth' 100, 'wght' 700;
+    font-size: clamp(1.125rem, 1.6vw, 1.5rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.65rem;
+    text-transform: none;
+  }
+
+  .promise-body {
+    color: var(--bone-2);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    max-width: 56ch;
+  }
+
+  .promise-n {
+    color: var(--line-lift);
+    padding-top: 0.5rem;
+  }
+
+  .why-fig {
+    margin: clamp(3.5rem, 8vw, 7rem) 0 0;
+    position: relative;
+  }
+
+  .why-fig :global(img) {
+    width: 100%;
+    height: clamp(200px, 30vw, 400px);
+    object-fit: cover;
+  }
+
+  .why-fig figcaption {
+    position: absolute;
+    left: var(--pad-x);
+    bottom: 1.25rem;
+    padding: 0.6rem 0.9rem;
+    background: color-mix(in srgb, var(--ink) 72%, transparent);
+    backdrop-filter: blur(6px);
+  }
+
+  @media (max-width: 980px) {
+    .why-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    .why-sticky {
+      position: static;
+    }
+    .promise {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+    .promise-n {
+      display: none;
+    }
+    .promise-label {
+      padding-top: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .promise {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>

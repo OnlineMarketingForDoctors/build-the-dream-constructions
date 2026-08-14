@@ -1,0 +1,315 @@
+---
+import { Image } from 'astro:assets';
+import plaster from '../assets/gen/texture-plaster.webp';
+import { services, business } from '../data/site.js';
+---
+
+<section class="cta section" id="quote" data-reveal>
+  <div class="cta-bg" aria-hidden="true">
+    <Image src={plaster} alt="" widths={[1200, 2000]} sizes="100vw" quality={72} />
+    <span class="cta-veil"></span>
+  </div>
+
+  <div class="shell cta-in">
+    <div class="cta-left">
+      <div class="setout">
+        <span class="annot">08 / Next step</span>
+        <span class="setout-rule"></span>
+      </div>
+      <h2 class="display display-l rise">
+        Tell us about<br />the room.
+      </h2>
+      <p class="lede rise rise-2">
+        We will come and measure it, then send a fixed written quote with the
+        scope itemised. No cost, no obligation, and no pressure on the visit.
+      </p>
+
+      <ul class="cta-facts rise rise-3">
+        <li><span class="annot">Call</span><a href={business.phoneHref}>{business.phone}</a></li>
+        <li><span class="annot">Email</span><a href={`mailto:${business.email}`}>{business.email}</a></li>
+        <li><span class="annot">Hours</span><span>{business.hours}</span></li>
+      </ul>
+    </div>
+
+    <form class="qf rise rise-2" id="quote-form" novalidate>
+      <div class="qf-row">
+        <div class="field">
+          <label for="q-name">Your name</label>
+          <input id="q-name" name="name" type="text" required autocomplete="name" />
+        </div>
+        <div class="field">
+          <label for="q-phone">Phone</label>
+          <input id="q-phone" name="phone" type="tel" required autocomplete="tel" />
+        </div>
+      </div>
+
+      <div class="qf-row">
+        <div class="field">
+          <label for="q-email">Email</label>
+          <input id="q-email" name="email" type="email" required autocomplete="email" />
+        </div>
+        <div class="field">
+          <label for="q-suburb">Suburb</label>
+          <input id="q-suburb" name="suburb" type="text" required autocomplete="address-level2" />
+        </div>
+      </div>
+
+      <div class="field">
+        <label for="q-service">What are you looking at</label>
+        <select id="q-service" name="service" required>
+          <option value="">Choose one</option>
+          {services.map((s) => <option value={s.name}>{s.name}</option>)}
+          <option value="More than one">More than one of these</option>
+          <option value="Not sure yet">Not sure yet</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="q-detail">Anything useful to know</label>
+        <textarea id="q-detail" name="detail" rows="3" placeholder="Rough size, timing, whether you have plans already"></textarea>
+      </div>
+
+      <!-- Simple bot trap, kept out of the tab order and off screen. -->
+      <div class="hp" aria-hidden="true">
+        <label for="q-company">Company</label>
+        <input id="q-company" name="company" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <button class="btn qf-send" type="submit">
+        <span>Send it through</span><i class="btn-arrow"></i>
+      </button>
+
+      <p class="qf-msg" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>
+
+<style>
+  .cta {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .cta-bg :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .cta-veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      95deg,
+      var(--ink) 18%,
+      color-mix(in srgb, var(--ink) 88%, transparent) 55%,
+      color-mix(in srgb, var(--ink) 74%, transparent) 100%
+    );
+  }
+
+  .cta-in {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: start;
+  }
+
+  .cta-left .lede {
+    max-width: 40ch;
+    margin-top: 1.5rem;
+  }
+
+  .cta-facts {
+    margin-top: clamp(2rem, 4vw, 3rem);
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .cta-facts li {
+    display: grid;
+    grid-template-columns: 5rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+    padding-bottom: 0.9rem;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.9375rem;
+  }
+
+  .cta-facts a {
+    color: var(--bone);
+    transition: color 0.3s var(--ease);
+  }
+
+  .cta-facts a:hover {
+    color: var(--signal);
+  }
+
+  /* Form */
+  .qf {
+    display: grid;
+    gap: 1.125rem;
+    background: color-mix(in srgb, var(--surface) 82%, transparent);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--line);
+    border-left: 2px solid var(--signal);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .qf-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.125rem;
+  }
+
+  .field {
+    display: grid;
+    gap: 0.45rem;
+  }
+
+  .field label {
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .field input,
+  .field select,
+  .field textarea {
+    width: 100%;
+    background: var(--ink);
+    border: 1px solid var(--line);
+    color: var(--bone);
+    font-family: var(--body);
+    font-size: 0.9375rem;
+    padding: 0.75rem 0.85rem;
+    transition: border-color 0.3s var(--ease);
+  }
+
+  .field textarea {
+    resize: vertical;
+    min-height: 4.5rem;
+  }
+
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--signal);
+  }
+
+  .field input[aria-invalid='true'],
+  .field select[aria-invalid='true'] {
+    border-color: #d8624a;
+  }
+
+  .field select {
+    appearance: none;
+    background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%),
+      linear-gradient(135deg, var(--muted) 50%, transparent 50%);
+    background-position: calc(100% - 18px) 52%, calc(100% - 13px) 52%;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+  }
+
+  .hp {
+    position: absolute;
+    left: -9999px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .qf-send {
+    justify-self: start;
+    margin-top: 0.25rem;
+  }
+
+  .qf-msg {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    line-height: 1.6;
+    letter-spacing: 0.04em;
+    min-height: 1.2em;
+    color: var(--bone-2);
+  }
+
+  .qf-msg.is-bad {
+    color: #e08a76;
+  }
+
+  .qf-msg.is-good {
+    color: var(--signal);
+  }
+
+  @media (max-width: 900px) {
+    .cta-in {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .qf-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const form = document.getElementById('quote-form');
+  const msg = form?.querySelector('.qf-msg');
+
+  const setMsg = (text, tone) => {
+    if (!msg) return;
+    msg.textContent = text;
+    msg.classList.toggle('is-bad', tone === 'bad');
+    msg.classList.toggle('is-good', tone === 'good');
+  };
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form));
+
+    const required = ['name', 'phone', 'email', 'suburb', 'service'];
+    let firstBad = null;
+    for (const key of required) {
+      const el = form.elements[key];
+      const bad = !String(data[key] || '').trim();
+      el.setAttribute('aria-invalid', String(bad));
+      if (bad && !firstBad) firstBad = el;
+    }
+    if (firstBad) {
+      setMsg('Fill in the highlighted fields and try again.', 'bad');
+      firstBad.focus();
+      return;
+    }
+
+    const btn = form.querySelector('.qf-send');
+    btn.disabled = true;
+    setMsg('Sending.');
+
+    try {
+      const res = await fetch('/api/quote', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      form.reset();
+      setMsg('Got it. We will be in touch within one business day.', 'good');
+    } catch {
+      setMsg('That did not send. Call 0425 351 578 and we will take the details.', 'bad');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+</script>

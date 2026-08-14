@@ -1,0 +1,228 @@
+---
+import { testimonials } from '../data/site.js';
+---
+
+<section class="tst section" id="testimonials" data-reveal>
+  <div class="shell">
+    <div class="setout">
+      <span class="annot">05 / In their words</span>
+      <span class="setout-rule"></span>
+    </div>
+
+    <div class="tst-grid">
+      <div class="tst-left">
+        <h2 class="display display-l rise">What people<br />actually say.</h2>
+        <ul class="tst-tabs rise rise-2" role="tablist" aria-label="Customer reviews">
+          {testimonials.map((t, i) => (
+            <li role="presentation">
+              <button
+                role="tab"
+                id={`tab-${i}`}
+                aria-controls={`panel-${i}`}
+                aria-selected={i === 0 ? 'true' : 'false'}
+                tabindex={i === 0 ? '0' : '-1'}
+                class="tst-tab"
+                data-i={i}
+              >
+                <span class="tst-tab-rule"></span>
+                <span class="tst-tab-txt">
+                  <span class="tst-tab-name">{t.name}</span>
+                  <span class="annot">{t.service}</span>
+                </span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="tst-right rise rise-3">
+        {testimonials.map((t, i) => (
+          <blockquote
+            role="tabpanel"
+            id={`panel-${i}`}
+            aria-labelledby={`tab-${i}`}
+            class="tst-panel"
+            hidden={i !== 0}
+          >
+            <span class="tst-mark" aria-hidden="true"></span>
+            <p class="tst-quote">{t.quote}</p>
+            <footer class="tst-foot">
+              <cite class="tst-cite">{t.name}</cite>
+              <span class="annot annot-signal">{t.service}</span>
+            </footer>
+          </blockquote>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tst-grid {
+    display: grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+  }
+
+  .tst-tabs {
+    margin-top: clamp(2rem, 4vw, 3rem);
+    display: grid;
+  }
+
+  .tst-tab {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.9rem 0;
+    background: none;
+    border: 0;
+    border-top: 1px solid var(--line);
+    text-align: left;
+    cursor: pointer;
+    color: var(--muted);
+    transition: color 0.35s var(--ease);
+  }
+
+  .tst-tabs li:last-child .tst-tab {
+    border-bottom: 1px solid var(--line);
+  }
+
+  .tst-tab-rule {
+    height: 1px;
+    background: var(--line-lift);
+    transform: scaleX(0.35);
+    transform-origin: left;
+    transition: transform 0.5s var(--ease-snap), background 0.35s var(--ease);
+  }
+
+  .tst-tab-txt {
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .tst-tab-name {
+    font-family: var(--display);
+    font-variation-settings: 'wdth' 102, 'wght' 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+  }
+
+  .tst-tab:hover,
+  .tst-tab:focus-visible {
+    color: var(--bone-2);
+  }
+
+  .tst-tab[aria-selected='true'] {
+    color: var(--bone);
+  }
+
+  .tst-tab[aria-selected='true'] .tst-tab-rule {
+    transform: scaleX(1);
+    background: var(--signal);
+  }
+
+  .tst-right {
+    background: var(--surface);
+    padding: clamp(1.75rem, 4vw, 3.5rem);
+    min-height: clamp(340px, 34vw, 460px);
+    display: grid;
+    align-content: center;
+    position: relative;
+    border-left: 2px solid var(--signal);
+  }
+
+  .tst-panel {
+    margin: 0;
+    display: grid;
+    gap: 1.75rem;
+    animation: quoteIn 0.6s var(--ease) both;
+  }
+
+  /* The hidden attribute has to beat display: grid. */
+  .tst-panel[hidden] {
+    display: none;
+  }
+
+  @keyframes quoteIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .tst-mark {
+    width: 26px;
+    height: 2px;
+    background: var(--signal);
+  }
+
+  .tst-quote {
+    font-family: var(--display);
+    font-variation-settings: 'wdth' 96, 'wght' 450;
+    font-size: clamp(1.0625rem, 1.55vw, 1.5rem);
+    line-height: 1.42;
+    letter-spacing: -0.012em;
+    text-transform: none;
+    color: var(--bone);
+  }
+
+  .tst-foot {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.35rem 1rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line-lift);
+  }
+
+  .tst-cite {
+    font-style: normal;
+    font-family: var(--display);
+    font-variation-settings: 'wdth' 104, 'wght' 700;
+    text-transform: uppercase;
+    font-size: 0.9375rem;
+  }
+
+  @media (max-width: 900px) {
+    .tst-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .tst-tab {
+      grid-template-columns: 1.5rem 1fr;
+    }
+  }
+</style>
+
+<script>
+  const root = document.querySelector('.tst-grid');
+  if (root) {
+    const tabs = [...root.querySelectorAll('.tst-tab')];
+    const panels = [...root.querySelectorAll('.tst-panel')];
+
+    const select = (i, focus = false) => {
+      tabs.forEach((t, n) => {
+        const on = n === i;
+        t.setAttribute('aria-selected', String(on));
+        t.tabIndex = on ? 0 : -1;
+        panels[n].hidden = !on;
+      });
+      if (focus) tabs[i].focus();
+    };
+
+    tabs.forEach((t, i) => {
+      t.addEventListener('click', () => select(i));
+      t.addEventListener('keydown', (e) => {
+        const k = e.key;
+        if (k !== 'ArrowDown' && k !== 'ArrowUp' && k !== 'Home' && k !== 'End') return;
+        e.preventDefault();
+        const last = tabs.length - 1;
+        if (k === 'Home') return select(0, true);
+        if (k === 'End') return select(last, true);
+        select(k === 'ArrowDown' ? (i === last ? 0 : i + 1) : i === 0 ? last : i - 1, true);
+      });
+    });
+  }
+</script>

@@ -1,0 +1,156 @@
+---
+import { Image } from 'astro:assets';
+import mark from '../assets/brand/logo-mark.png';
+import { business, services } from '../data/site.js';
+const year = 2026;
+---
+
+<footer class="ftr">
+  <div class="shell">
+    <div class="ftr-top">
+      <div class="ftr-brand">
+        <Image src={mark} alt="" width={54} densities={[1, 2]} />
+        <p class="ftr-tag display">
+          Build the<br /><em>Dream</em><br />Constructions
+        </p>
+      </div>
+
+      <nav class="ftr-nav" aria-label="Services">
+        <h2 class="annot">Services</h2>
+        <ul>
+          {services.map((s) => (
+            <li><a href={`/services/${s.slug}`}>{s.name}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <nav class="ftr-nav" aria-label="Company">
+        <h2 class="annot">Company</h2>
+        <ul>
+          <li><a href="#projects">Projects</a></li>
+          <li><a href="#why">Why us</a></li>
+          <li><a href="#process">Our process</a></li>
+          <li><a href="#areas">Service areas</a></li>
+          <li><a href="#testimonials">Reviews</a></li>
+        </ul>
+      </nav>
+
+      <div class="ftr-nav">
+        <h2 class="annot">Contact</h2>
+        <ul>
+          <li><a href={business.phoneHref}>{business.phone}</a></li>
+          <li><a href={`mailto:${business.email}`}>{business.email}</a></li>
+          <li class="ftr-addr">{business.address}</li>
+          <li class="ftr-addr">{business.hours}</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ftr-legal">
+      <p class="annot">
+        Licence No. <span class="annot-signal">{business.licence}</span> · Fully insured
+        as required under NSW legislation · Statutory warranties apply under the
+        Home Building Act 1989
+      </p>
+      <p class="annot ftr-copy">
+        &copy; {year} {business.name} · Founded {business.founded} in {business.suburb}
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .ftr {
+    border-top: 1px solid var(--line);
+    background: var(--charcoal);
+    padding-block: clamp(3rem, 7vw, 5.5rem) 2rem;
+  }
+
+  .ftr-top {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+    gap: clamp(2rem, 4vw, 4rem);
+    padding-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .ftr-brand {
+    display: grid;
+    gap: 1.25rem;
+    align-content: start;
+  }
+
+  .ftr-tag {
+    font-variation-settings: 'wdth' 112, 'wght' 800;
+    text-transform: uppercase;
+    font-size: clamp(1.5rem, 2.4vw, 2.1rem);
+    line-height: 0.94;
+    letter-spacing: -0.02em;
+  }
+
+  .ftr-tag em {
+    font-style: normal;
+    color: var(--signal);
+  }
+
+  .ftr-nav h2 {
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .ftr-nav ul {
+    display: grid;
+    gap: 0.65rem;
+  }
+
+  .ftr-nav a {
+    font-size: 0.9375rem;
+    color: var(--bone-2);
+    transition: color 0.28s var(--ease);
+  }
+
+  .ftr-nav a:hover,
+  .ftr-nav a:focus-visible {
+    color: var(--signal);
+  }
+
+  .ftr-addr {
+    font-size: 0.8125rem;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .ftr-legal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    padding-top: 1.75rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .ftr-legal p {
+    text-transform: none;
+    letter-spacing: 0.03em;
+    font-size: 0.6875rem;
+    line-height: 1.7;
+    max-width: 68ch;
+  }
+
+  .ftr-copy {
+    color: var(--muted);
+  }
+
+  @media (max-width: 900px) {
+    .ftr-top {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .ftr-top {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+</style>
