@@ -9,6 +9,9 @@ const nav = [
   { label: 'Projects', href: '/projects' },
   { label: 'Process', href: '/process' },
   { label: 'Areas', href: '/areas' },
+  { label: 'Reviews', href: '/testimonials' },
+  { label: 'FAQs', href: '/faqs' },
+  { label: 'Inspiration centre', href: '/blog' },
 ];
 ---
 
@@ -171,7 +174,7 @@ const nav = [
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.6rem 1.5rem;
+    gap: 0.6rem 1.15rem;
   }
 
   .nav a {
@@ -243,6 +246,7 @@ const nav = [
   .hdr-cta {
     padding: 0.8125rem 1.25rem;
     font-size: 0.6875rem;
+    white-space: nowrap;
   }
 
   .burger,
@@ -304,14 +308,15 @@ const nav = [
     color: var(--bone-2);
   }
 
-  /* Narrow desktop: drop the phone number before the nav starts wrapping. */
-  @media (max-width: 1320px) {
+  /* Narrow desktop: drop the phone number before the nav starts wrapping.
+     Eight nav items need more room than five did. */
+  @media (max-width: 1560px) {
     .tel {
       display: none;
     }
   }
 
-  @media (max-width: 1080px) {
+  @media (max-width: 1240px) {
     .nav,
     .hdr-act {
       display: none;
