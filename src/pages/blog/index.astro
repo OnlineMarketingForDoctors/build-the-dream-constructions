@@ -1,0 +1,191 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import PageHero from '../../components/PageHero.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Footer from '../../components/Footer.astro';
+import heroImg from '../../assets/blog/hero-blog.webp';
+import { posts, upcoming } from '../../data/blog.js';
+
+const imgs = import.meta.glob('../../assets/blog/*.webp', { eager: true, import: 'default' });
+const img = (n) => imgs[`../../assets/blog/${n}.webp`];
+const fmt = (d) => new Date(d + 'T00:00:00').toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
+const sorted = [...posts].sort((a, b) => (a.date < b.date ? 1 : -1));
+const [lead, ...rest] = sorted;
+---
+
+<Base
+  title="Inspiration Centre | Build The Dream Constructions"
+  description="Practical renovation advice from a Sydney builder. Flooring, tiling, planning and the mistakes that cost the most to fix."
+>
+  <Header />
+  <main id="main">
+    <PageHero
+      eyebrow='<span class="annot-signal">Inspiration centre</span> · Renovation advice'
+      lines={['What we', 'tell people', '<em>on site.</em>']}
+      lede="The questions that come up on every job, answered properly. No trend roundups, no listicles, just the things worth knowing before you commit to a scope."
+      image={heroImg}
+      imageAlt="Flooring, stone and tile samples laid out on a bench under a warm lamp"
+      cta={{ label: 'Request a quote', href: '/contact' }}
+      secondary={{ label: 'See our services', href: '/services' }}
+    />
+
+    <div class="notice shell" role="note">
+      <p class="annot">
+        <span class="annot-signal">Draft content</span> · These articles are samples written
+        for the site build. The advice is sound but they are not Bill's words and have not
+        been reviewed. Edit or replace before launch.
+      </p>
+    </div>
+
+    <section class="section" data-reveal>
+      <div class="shell">
+        <div class="setout">
+          <span class="annot">Latest</span>
+          <span class="setout-rule"></span>
+        </div>
+
+        <a class="lead rise" href={`/blog/${lead.slug}`}>
+          <div class="lead-media">
+            <Image src={img(lead.image)} alt={lead.imageAlt} widths={[800, 1400, 2000]} sizes="(max-width: 980px) 100vw, 60vw" quality={80} />
+          </div>
+          <div class="lead-body">
+            <p class="annot"><span class="annot-signal">{lead.category}</span> · {fmt(lead.date)} · {lead.read}</p>
+            <h2 class="display lead-title">{lead.title}</h2>
+            <p class="lead-ex">{lead.excerpt}</p>
+            <span class="lead-go annot annot-signal">Read the article <i class="btn-arrow"></i></span>
+          </div>
+        </a>
+
+        <ul class="cards rise rise-2">
+          {rest.map((p) => (
+            <li>
+              <a class="card" href={`/blog/${p.slug}`}>
+                <div class="card-media">
+                  <Image src={img(p.image)} alt={p.imageAlt} widths={[500, 900]} sizes="(max-width: 860px) 100vw, 45vw" quality={78} />
+                </div>
+                <div class="card-body">
+                  <p class="annot"><span class="annot-signal">{p.category}</span> · {p.read}</p>
+                  <h3 class="display card-title">{p.title}</h3>
+                  <p class="card-ex">{p.excerpt}</p>
+                  <span class="card-go annot">{fmt(p.date)}</span>
+                </div>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <section class="section soon" data-reveal>
+      <div class="shell">
+        <div class="setout">
+          <span class="annot">Coming next</span>
+          <span class="setout-rule"></span>
+        </div>
+        <div class="soon-grid">
+          <h2 class="display display-l rise">Planned<br />topics.</h2>
+          <ul class="soon-list rise rise-2">
+            {upcoming.map((u, i) => (
+              <li>
+                <span class="annot soon-n">{String(i + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3 class="soon-title display">{u.title}</h3>
+                  <p class="annot soon-cat">{u.category}</p>
+                  {u.note && <p class="soon-note">{u.note}</p>}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <CtaBand
+      title="Got a question we have not covered?"
+      body="Call and ask. You will speak to someone who has been on a site this week, and we will tell you if the answer is that it depends."
+    />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .notice { padding-top: 2rem; }
+  .notice p {
+    border-left: 2px solid var(--signal); padding: 0.85rem 1rem; background: var(--surface);
+    text-transform: none; letter-spacing: 0.02em; font-size: 0.75rem; line-height: 1.7; color: var(--bone-2);
+  }
+
+  .lead {
+    display: grid; grid-template-columns: 1.1fr 0.9fr;
+    gap: clamp(1.5rem, 3vw, 3rem); align-items: center;
+    padding-bottom: clamp(2.5rem, 5vw, 4rem); margin-bottom: clamp(2.5rem, 5vw, 4rem);
+    border-bottom: 1px solid var(--line);
+  }
+
+  .lead-media { overflow: hidden; }
+  .lead-media :global(img) {
+    width: 100%; height: clamp(260px, 34vw, 460px); object-fit: cover;
+    transition: transform 1.1s var(--ease);
+  }
+  .lead:hover .lead-media :global(img) { transform: scale(1.03); }
+
+  .lead-body { display: grid; gap: 1rem; }
+  .lead-title {
+    font-variation-settings: 'wdth' 100, 'wght' 700;
+    font-size: clamp(1.5rem, 2.6vw, 2.4rem);
+    text-transform: none; letter-spacing: -0.02em; line-height: 1.1;
+    transition: color 0.3s var(--ease);
+  }
+  .lead:hover .lead-title { color: var(--signal); }
+  .lead-ex { color: var(--bone-2); font-size: 0.9375rem; line-height: 1.62; max-width: 52ch; }
+  .lead-go { display: inline-flex; align-items: center; gap: 0.6rem; text-transform: none; letter-spacing: 0.04em; }
+
+  .cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap); }
+
+  .card {
+    display: grid; height: 100%; background: var(--surface);
+    border-top: 2px solid transparent; transition: border-color 0.35s var(--ease);
+  }
+  .card:hover { border-top-color: var(--signal); }
+
+  .card-media { overflow: hidden; }
+  .card-media :global(img) {
+    width: 100%; height: clamp(190px, 22vw, 280px); object-fit: cover;
+    transition: transform 1.1s var(--ease);
+  }
+  .card:hover .card-media :global(img) { transform: scale(1.04); }
+
+  .card-body { display: grid; gap: 0.7rem; padding: clamp(1.25rem, 2.4vw, 1.75rem); align-content: start; }
+  .card-title {
+    font-variation-settings: 'wdth' 100, 'wght' 700;
+    font-size: clamp(1.125rem, 1.6vw, 1.375rem);
+    text-transform: none; letter-spacing: -0.015em; line-height: 1.18;
+    transition: color 0.3s var(--ease);
+  }
+  .card:hover .card-title { color: var(--signal); }
+  .card-ex { color: var(--bone-2); font-size: 0.875rem; line-height: 1.6; }
+  .card-go { color: var(--muted); }
+
+  .soon { border-top: 1px solid var(--line); }
+  .soon-grid { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+  .soon-list { display: grid; }
+  .soon-list li {
+    display: grid; grid-template-columns: 3rem 1fr; gap: 1rem;
+    padding-block: 1.125rem; border-top: 1px solid var(--line);
+  }
+  .soon-list li:last-child { border-bottom: 1px solid var(--line); }
+  .soon-n { color: var(--signal); padding-top: 0.35rem; }
+  .soon-title {
+    font-variation-settings: 'wdth' 100, 'wght' 650;
+    font-size: 1.0625rem; text-transform: none; letter-spacing: -0.01em; line-height: 1.25;
+    color: var(--bone-2);
+  }
+  .soon-cat { margin-top: 0.4rem; color: var(--muted); }
+  .soon-note { margin-top: 0.5rem; color: var(--muted); font-size: 0.8125rem; line-height: 1.6; max-width: 56ch; }
+
+  @media (max-width: 980px) {
+    .lead, .cards, .soon-grid { grid-template-columns: 1fr; }
+  }
+</style>

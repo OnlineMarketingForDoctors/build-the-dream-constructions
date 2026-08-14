@@ -1,0 +1,170 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Header from '../../components/Header.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import Footer from '../../components/Footer.astro';
+import { posts } from '../../data/blog.js';
+import { business } from '../../data/site.js';
+
+export function getStaticPaths() {
+  return posts.map((p) => ({ params: { slug: p.slug }, props: { post: p } }));
+}
+
+const { post } = Astro.props;
+const imgs = import.meta.glob('../../assets/blog/*.webp', { eager: true, import: 'default' });
+const hero = imgs[`../../assets/blog/${post.image}.webp`];
+const fmt = (d) => new Date(d + 'T00:00:00').toLocaleDateString('en-AU', { day: 'numeric', month: 'long', year: 'numeric' });
+const others = posts.filter((p) => p.slug !== post.slug).slice(0, 2);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.title,
+  description: post.excerpt,
+  datePublished: post.date,
+  author: { '@type': 'Organization', name: business.name },
+  publisher: { '@type': 'Organization', name: business.name },
+};
+---
+
+<Base title={`${post.title} | Build The Dream Constructions`} description={post.excerpt}>
+  <Header />
+  <main id="main" class="art-main">
+    <article class="art">
+      <header class="art-head shell">
+        <p class="annot art-crumb">
+          <a href="/blog">Inspiration centre</a> · <span class="annot-signal">{post.category}</span>
+        </p>
+        <h1 class="display art-title">{post.title}</h1>
+        <p class="lede art-ex">{post.excerpt}</p>
+        <p class="annot art-meta">{fmt(post.date)} · {post.read} read</p>
+      </header>
+
+      <figure class="art-hero">
+        <Image src={hero} alt={post.imageAlt} widths={[900, 1500, 2200]} sizes="100vw" loading="eager" fetchpriority="high" quality={82} />
+      </figure>
+
+      <div class="art-body shell">
+        {post.body.map((b) =>
+          b.t === 'h' ? (
+            <h2 class="display art-h2">{b.v}</h2>
+          ) : b.t === 'list' ? (
+            <ul class="art-list">{b.v.map((li) => <li>{li}</li>)}</ul>
+          ) : (
+            <p>{b.v}</p>
+          ),
+        )}
+
+        <p class="art-flag annot">
+          <span class="annot-signal">Draft</span> · This article was written for the site build
+          and has not been reviewed by {business.founder}. Edit or replace before launch.
+        </p>
+      </div>
+
+      {others.length > 0 && (
+        <div class="art-more shell">
+          <div class="setout">
+            <span class="annot">Read next</span>
+            <span class="setout-rule is-in"></span>
+          </div>
+          <ul>
+            {others.map((o) => (
+              <li>
+                <a href={`/blog/${o.slug}`}>
+                  <span class="annot annot-signal">{o.category}</span>
+                  <h2 class="display more-title">{o.title}</h2>
+                  <span class="annot more-go">{o.read} read <i class="btn-arrow"></i></span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </article>
+
+    <CtaBand />
+  </main>
+  <Footer />
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Base>
+
+<style>
+  .art-main { padding-top: 8rem; }
+
+  .art-head { max-width: 62rem; display: grid; gap: 1.125rem; }
+
+  .art-crumb a { color: var(--bone-2); border-bottom: 1px solid var(--line-lift); }
+  .art-crumb a:hover { color: var(--signal); }
+
+  .art-title {
+    font-variation-settings: 'wdth' 100, 'wght' 750;
+    font-size: clamp(1.875rem, 4vw, 3.4rem);
+    text-transform: none; letter-spacing: -0.025em; line-height: 1.05;
+    max-width: 22ch;
+  }
+
+  .art-ex { max-width: 54ch; }
+  .art-meta { color: var(--muted); }
+
+  .art-hero { margin: clamp(2.5rem, 5vw, 4rem) 0; }
+  .art-hero :global(img) {
+    width: 100%; aspect-ratio: 16 / 9; height: auto; max-height: 70vh; object-fit: cover;
+  }
+
+  .art-body { max-width: 46rem; display: grid; gap: 1.375rem; }
+
+  .art-body p {
+    color: var(--bone-2);
+    font-size: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+    line-height: 1.75;
+  }
+
+  .art-h2 {
+    font-variation-settings: 'wdth' 100, 'wght' 700;
+    font-size: clamp(1.25rem, 2vw, 1.625rem);
+    text-transform: none; letter-spacing: -0.015em; line-height: 1.2;
+    margin-top: clamp(1.25rem, 2.5vw, 2rem);
+    color: var(--bone);
+  }
+
+  .art-list { display: grid; gap: 0.6rem; padding-left: 0; }
+  .art-list li {
+    color: var(--bone-2); font-size: 0.9375rem; line-height: 1.62;
+    padding-left: 1.25rem; position: relative;
+  }
+  .art-list li::before {
+    content: ''; position: absolute; left: 0; top: 0.6em;
+    width: 5px; height: 5px; background: var(--signal); transform: rotate(45deg);
+  }
+
+  .art-flag {
+    margin-top: 1.5rem; padding: 0.85rem 1rem;
+    border-left: 2px solid var(--line-lift); background: var(--surface);
+    text-transform: none; letter-spacing: 0.02em;
+    font-size: 0.75rem; line-height: 1.7; color: var(--muted);
+  }
+
+  .art-more { margin-top: clamp(3rem, 6vw, 5rem); }
+  .art-more ul { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--gap); }
+  .art-more a {
+    display: grid; gap: 0.7rem; height: 100%;
+    background: var(--surface); padding: clamp(1.25rem, 2.4vw, 2rem);
+    border-top: 2px solid transparent; transition: border-color 0.35s var(--ease);
+    align-content: start;
+  }
+  .art-more a:hover { border-top-color: var(--signal); }
+  .more-title {
+    font-variation-settings: 'wdth' 100, 'wght' 700;
+    font-size: clamp(1.0625rem, 1.5vw, 1.3rem);
+    text-transform: none; letter-spacing: -0.015em; line-height: 1.2;
+    transition: color 0.3s var(--ease);
+  }
+  .art-more a:hover .more-title { color: var(--signal); }
+  .more-go { color: var(--muted); display: inline-flex; align-items: center; gap: 0.5rem; }
+
+  @media (max-width: 760px) {
+    .art-main { padding-top: 6.5rem; }
+    .art-more ul { grid-template-columns: 1fr; }
+  }
+</style>

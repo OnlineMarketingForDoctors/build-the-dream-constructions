@@ -293,6 +293,14 @@ export const illustrativeRegister = [
     ],
   },
   {
+    group: 'Blog',
+    items: [
+      { what: 'Three sample articles', where: '/blog', now: 'Written for the site build, sound advice but not Bill\u2019s words and not reviewed', need: 'Edit into his voice, or replace' },
+      { what: 'Publication dates', where: '/blog', now: 'June to July 2026, chosen to look plausible', need: 'Real dates when the posts are approved' },
+      { what: 'Kitchen renovation costs article', where: 'Listed as planned only', now: 'Deliberately not written, it would need invented pricing', need: 'Real pricing before it can be written' },
+    ],
+  },
+  {
     group: 'Still missing',
     items: [
       { what: 'Google review link', where: 'Testimonials page', now: 'No link, the page says reviews are verified on request', need: 'Google Business Profile URL once it exists' },
