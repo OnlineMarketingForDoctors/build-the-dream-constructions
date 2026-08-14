@@ -6,21 +6,30 @@ import PageHero from '../components/PageHero.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Footer from '../components/Footer.astro';
 import heroImg from '../assets/pages/hero-services.webp';
-import matKitchen from '../assets/gen/mat-kitchen.webp';
-import matBathroom from '../assets/gen/mat-bathroom.webp';
-import matDecking from '../assets/gen/mat-decking.webp';
-import matFlooring from '../assets/gen/mat-flooring.webp';
-import matTiling from '../assets/gen/mat-tiling.webp';
-import grannyImg from '../assets/projects/ba/granny-after.webp';
+import svcKitchen from '../assets/services/svc-kitchen.webp';
+import svcBathroom from '../assets/services/svc-bathroom.webp';
+import svcDecking from '../assets/services/svc-decking.webp';
+import svcFlooring from '../assets/services/svc-flooring.webp';
+import svcTiling from '../assets/services/svc-tiling.webp';
+import svcGranny from '../assets/services/svc-granny.webp';
 import { serviceDetail } from '../data/pages.js';
 
 const imgs = {
-  'kitchen-renovations': matKitchen,
-  'bathroom-renovations': matBathroom,
-  decking: matDecking,
-  flooring: matFlooring,
-  tiling: matTiling,
-  'granny-flats': grannyImg,
+  'kitchen-renovations': svcKitchen,
+  'bathroom-renovations': svcBathroom,
+  decking: svcDecking,
+  flooring: svcFlooring,
+  tiling: svcTiling,
+  'granny-flats': svcGranny,
+};
+
+const alts = {
+  'kitchen-renovations': 'A completed kitchen with charcoal cabinetry, a stone island and warm pendant lighting',
+  'bathroom-renovations': 'A completed bathroom with stone tiling, a walk in shower and a backlit mirror',
+  decking: 'A completed merbau deck at dusk with warm lighting and steps down to the lawn',
+  flooring: 'Wide engineered oak flooring running through a living room at dusk',
+  tiling: 'Large format floor tiling with tight grout lines running down a hallway',
+  'granny-flats': 'A completed granny flat in a backyard at dusk with warm light in the windows',
 };
 ---
 
@@ -52,7 +61,7 @@ const imgs = {
             <figure class="svc-fig rise">
               <Image
                 src={imgs[s.slug]}
-                alt={`${s.name} detail`}
+                alt={alts[s.slug]}
                 widths={[500, 900, 1400]}
                 sizes="(max-width: 980px) 100vw, 45vw"
                 quality={80}
@@ -112,9 +121,11 @@ const imgs = {
     border-left: 2px solid var(--signal);
   }
 
+  /* Generated at 4:3 and shown at 4:3, so the rooms are not cropped. */
   .svc-fig :global(img) {
     width: 100%;
-    height: clamp(260px, 32vw, 460px);
+    aspect-ratio: 4 / 3;
+    height: auto;
     object-fit: cover;
     transition: transform 1.2s var(--ease);
   }

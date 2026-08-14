@@ -287,7 +287,8 @@ export const illustrativeRegister = [
     group: 'Imagery generally',
     items: [
       { what: 'All page hero images', where: 'Every page', now: 'Generated brand imagery, makes no claim to be your work', need: 'Optional to replace, these are decorative rather than documentary' },
-      { what: 'Service tile material images', where: 'Homepage, /services', now: 'Generated material close ups, makes no claim to be your work', need: 'Optional to replace' },
+      { what: 'Service tile material images', where: 'Homepage', now: 'Generated material close ups, makes no claim to be your work', need: 'Optional to replace' },
+      { what: 'Service page room images', where: '/services', now: 'Generated finished rooms, not photographs of your jobs', need: 'Replace with real completed rooms once photographed' },
       { what: 'Bill Chen portrait', where: 'Homepage, /about', now: 'Generated from Bill’s own photographs, his real likeness', need: 'Optional, a professional photograph would be better' },
       { what: 'Homepage hero', where: 'Homepage', now: 'A real project photograph, restyled to dusk', need: 'Optional, it is no longer a literal record of that apartment' },
     ],
