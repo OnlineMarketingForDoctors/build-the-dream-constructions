@@ -19,6 +19,7 @@ const nav = [
       <span class="brand-txt">
         <span class="brand-1">Build the</span>
         <span class="brand-2">Dream</span>
+        <span class="brand-3">Constructions</span>
       </span>
     </a>
 
@@ -87,17 +88,26 @@ const nav = [
     text-transform: uppercase;
   }
 
+  /* Three lines, set to roughly equal widths so the lockup matches the
+     supplied logo rather than truncating it. */
   .brand-1 {
-    font-variation-settings: 'wdth' 100, 'wght' 600;
-    font-size: 0.6875rem;
-    letter-spacing: 0.14em;
+    font-variation-settings: 'wdth' 100, 'wght' 700;
+    font-size: 0.625rem;
+    letter-spacing: 0.125em;
     color: var(--signal);
   }
 
   .brand-2 {
     font-variation-settings: 'wdth' 112, 'wght' 800;
-    font-size: 1.0625rem;
+    font-size: 1.125rem;
     letter-spacing: 0.005em;
+  }
+
+  .brand-3 {
+    font-variation-settings: 'wdth' 100, 'wght' 700;
+    font-size: 0.5rem;
+    letter-spacing: 0.06em;
+    color: var(--signal);
   }
 
   .nav {

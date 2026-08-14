@@ -129,7 +129,7 @@ ol {
 }
 
 .display-xl {
-  font-size: clamp(2.9rem, 9.2vw, 9.5rem);
+  font-size: clamp(2.5rem, 6.4vw, 6.25rem);
 }
 
 .display-l {
