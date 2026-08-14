@@ -16,11 +16,11 @@ const facts = [
     <Image
       src={heroImg}
       alt="Renovated open plan living and kitchen with a mitred stone island and timber flooring"
-      widths={[900, 1400, 2000]}
+      widths={[900, 1400, 2000, 2800]}
       sizes="100vw"
       loading="eager"
       fetchpriority="high"
-      quality={80}
+      quality={82}
     />
     <div class="hero-scrim"></div>
     <div class="hero-scrim-2"></div>
@@ -106,12 +106,14 @@ const facts = [
   .hero-scrim {
     position: absolute;
     inset: 0;
+    /* Held dark on the left for the headline, opened up on the right so the
+       photograph keeps its colour. */
     background: linear-gradient(
       100deg,
-      var(--ink) 8%,
-      color-mix(in srgb, var(--ink) 88%, transparent) 40%,
-      color-mix(in srgb, var(--ink) 55%, transparent) 70%,
-      color-mix(in srgb, var(--ink) 28%, transparent) 100%
+      var(--ink) 6%,
+      color-mix(in srgb, var(--ink) 84%, transparent) 38%,
+      color-mix(in srgb, var(--ink) 44%, transparent) 68%,
+      color-mix(in srgb, var(--ink) 14%, transparent) 100%
     );
   }
 
