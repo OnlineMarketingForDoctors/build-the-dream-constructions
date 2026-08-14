@@ -2,14 +2,56 @@
 import Base from '../layouts/Base.astro';
 import Header from '../components/Header.astro';
 import PageHero from '../components/PageHero.astro';
+import Gallery from '../components/Gallery.astro';
 import BeforeAfter from '../components/BeforeAfter.astro';
 import CtaBand from '../components/CtaBand.astro';
 import Footer from '../components/Footer.astro';
 import heroImg from '../assets/pages/hero-projects.webp';
-import { projects, projectCategories } from '../data/pages.js';
+import { projects, projectCategories, realProjects } from '../data/pages.js';
+
+const g = import.meta.glob('../assets/projects/gallery/*.webp', { eager: true, import: 'default' });
+const pickG = (prefix) =>
+  Object.keys(g)
+    .filter((k) => k.includes(`/${prefix}-`))
+    .sort()
+    .map((k) => g[k]);
+
+const mdlmSrc = pickG('mdlm');
+const omdSrc = pickG('omd');
+
+const mdlmAlts = [
+  'Open plan living with the mitred stone island and ocean outlook',
+  'Kitchen with full height marble splashback and integrated appliances',
+  'Dining area under the copper pendant cluster',
+  'Main bedroom with custom bedhead and panelled walls',
+  'Main bathroom with freestanding bath and double vanity',
+  'Walk in robe with custom joinery and lighting',
+  'Living and dining looking back through the apartment',
+  'Balcony seating with the beachfront outlook',
+];
+
+const omdAlts = [
+  ['Reception and waiting area', 'Visualisation'],
+  ['Panelled meeting room in deep green', 'Visualisation'],
+  ['Dining and meeting area with the arched joinery', 'Visualisation'],
+  ['The same room completed, with the arch and cane seating built', 'Completed'],
+  ['Laundry with custom joinery and patterned floor tiling', 'Visualisation'],
+  ['Bathroom with large format tiling and patterned floor', 'Visualisation'],
+  ['Completed meeting room with pendant and cane chairs', 'Completed'],
+  ['Completed seating nook by the round window', 'Completed'],
+];
+
+const galleries = {
+  'maison-de-la-mer': mdlmSrc.map((src, i) => ({ src, alt: mdlmAlts[i] || 'Maison De La Mer interior', tag: 'Completed' })),
+  'commercial-office-fit-out': omdSrc.map((src, i) => ({
+    src,
+    alt: (omdAlts[i] && omdAlts[i][0]) || 'Office fit out',
+    tag: (omdAlts[i] && omdAlts[i][1]) || 'Completed',
+  })),
+};
 
 const ba = import.meta.glob('../assets/projects/ba/*.webp', { eager: true, import: 'default' });
-const pick = (key) => ({
+const pickBA = (key) => ({
   before: ba[`../assets/projects/ba/${key}-before.webp`],
   after: ba[`../assets/projects/ba/${key}-after.webp`],
 });
@@ -25,43 +67,79 @@ const keyFor = {
 
 <Base
   title="Projects | Build The Dream Constructions"
-  description="Renovation projects across Sydney, shown before and after, with the scope of works, timeframe and the problem each job had to solve."
+  description="Completed renovation work across Sydney and beyond, including a full twelve month apartment renovation and a commercial office fit out shown alongside its approved renders."
 >
   <Header />
   <main id="main">
     <PageHero
-      eyebrow='<span class="annot-signal">Projects</span> · Before and after'
-      lines={['Drag the', 'line to see', '<em>the change.</em>']}
-      lede="Each project below lists the scope of works, the timeframe and the problem the job actually had to solve. Drag the handle on any image to compare."
+      eyebrow='<span class="annot-signal">Projects</span> · Completed work'
+      lines={['The work,', 'start to', '<em>finish.</em>']}
+      lede="Two completed jobs shown in full, with the scope written out. Below them, before and after comparisons across each of our services."
       image={heroImg}
       imageAlt="A completed open plan living space at dusk with warm pendant lighting"
       cta={{ label: 'Request a quote', href: '/contact' }}
       secondary={{ label: 'See our services', href: '/services' }}
     />
 
-    <div class="notice shell" role="note">
-      <p class="annot">
-        <span class="annot-signal">Placeholder content</span> · The projects on this page are
-        illustrative while the site is in development. Replace with real jobs and photographs
-        before launch.
-      </p>
-    </div>
+    {realProjects.map((p, idx) => (
+      <section class="case section" id={p.slug} data-reveal>
+        <div class="shell">
+          <div class="setout">
+            <span class="annot">{String(idx + 1).padStart(2, '0')} / {p.kind}</span>
+            <span class="setout-rule"></span>
+          </div>
 
-    <section class="section" id="work" data-reveal>
+          <div class="case-head">
+            <h2 class="display display-l rise">{p.name}</h2>
+            <div class="case-lede rise rise-2">
+              {p.blurb.map((b) => <p>{b}</p>)}
+            </div>
+          </div>
+
+          <div class="case-body">
+            <div class="case-gal rise rise-3">
+              <Gallery images={galleries[p.slug]} name={p.name} />
+            </div>
+
+            <aside class="case-side rise rise-4">
+              <dl class="case-meta">
+                {p.meta.map(([k, v]) => (
+                  <div><dt class="annot">{k}</dt><dd>{v}</dd></div>
+                ))}
+              </dl>
+              <div class="case-challenge">
+                <span class="annot">The hard part</span>
+                <p>{p.challenge}</p>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+    ))}
+
+    <section class="section grid-sec" id="work" data-reveal>
       <div class="shell">
         <div class="setout">
-          <span class="annot">Selected work</span>
+          <span class="annot">03 / By service</span>
           <span class="setout-rule"></span>
         </div>
 
-        <div class="filters" role="group" aria-label="Filter projects by category">
+        <div class="grid-head">
+          <h2 class="display display-l rise">Before<br />and after.</h2>
+          <p class="lede rise rise-2">
+            Drag the handle on any image to compare. Each one lists the scope, the
+            timeframe and the problem the job had to solve.
+          </p>
+        </div>
+
+        <p class="notice annot rise" role="note">
+          <span class="annot-signal">Placeholder content</span> · The six comparisons below
+          are illustrative while the site is in development. The two projects above are real.
+        </p>
+
+        <div class="filters" role="group" aria-label="Filter by category">
           {projectCategories.map((c, i) => (
-            <button
-              class="filter"
-              type="button"
-              data-cat={c}
-              aria-pressed={i === 0 ? 'true' : 'false'}
-            >
+            <button class="filter" type="button" data-cat={c} aria-pressed={i === 0 ? 'true' : 'false'}>
               {c}
             </button>
           ))}
@@ -70,20 +148,17 @@ const keyFor = {
         <ul class="prj-list">
           {projects.map((p) => (
             <li class="prj" data-category={p.category}>
-              <BeforeAfter {...pick(keyFor[p.category])} alt={p.title} label={p.slug} />
-
+              <BeforeAfter {...pickBA(keyFor[p.category])} alt={p.title} label={p.slug} />
               <div class="prj-meta">
                 <div class="prj-head">
                   <span class="annot annot-signal">{p.category}</span>
-                  <h2 class="display prj-title">{p.title}</h2>
+                  <h3 class="display prj-title">{p.title}</h3>
                 </div>
-
                 <dl class="prj-facts">
                   <div><dt class="annot">Location</dt><dd>{p.location}</dd></div>
                   <div><dt class="annot">Timeframe</dt><dd>{p.timeframe}</dd></div>
                   <div><dt class="annot">Scope</dt><dd>{p.scope}</dd></div>
                 </dl>
-
                 <div class="prj-challenge">
                   <span class="annot">Problem solved</span>
                   <p>{p.challenge}</p>
@@ -106,11 +181,91 @@ const keyFor = {
 </Base>
 
 <style>
-  .notice {
-    padding-top: 2rem;
+  /* Real case studies */
+  .case {
+    border-top: 1px solid var(--line);
   }
 
-  .notice p {
+  .case-head {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: start;
+    margin-bottom: clamp(2rem, 4vw, 3rem);
+  }
+
+  .case-lede {
+    display: grid;
+    gap: 1.125rem;
+    color: var(--bone-2);
+    max-width: 62ch;
+  }
+
+  .case-body {
+    display: grid;
+    grid-template-columns: 1.55fr 0.75fr;
+    gap: clamp(1.5rem, 3vw, 3rem);
+    align-items: start;
+  }
+
+  .case-side {
+    display: grid;
+    gap: 1.75rem;
+    align-content: start;
+    background: var(--surface);
+    border-left: 2px solid var(--signal);
+    padding: clamp(1.25rem, 2.4vw, 2rem);
+  }
+
+  .case-meta {
+    display: grid;
+    gap: 0.9rem;
+    margin: 0;
+  }
+
+  .case-meta div {
+    display: grid;
+    gap: 0.3rem;
+  }
+
+  .case-meta dd {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--bone);
+  }
+
+  .case-challenge {
+    display: grid;
+    gap: 0.6rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-lift);
+  }
+
+  .case-challenge p {
+    color: var(--bone-2);
+    font-size: 0.9375rem;
+    line-height: 1.62;
+  }
+
+  /* Illustrative grid */
+  .grid-sec {
+    border-top: 1px solid var(--line);
+  }
+
+  .grid-head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: end;
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
+  }
+
+  .grid-head .lede {
+    max-width: 46ch;
+  }
+
+  .notice {
     border-left: 2px solid var(--signal);
     padding: 0.85rem 1rem;
     background: var(--surface);
@@ -119,6 +274,7 @@ const keyFor = {
     font-size: 0.75rem;
     line-height: 1.7;
     color: var(--bone-2);
+    margin-bottom: clamp(1.5rem, 3vw, 2.5rem);
   }
 
   .filters {
@@ -141,10 +297,7 @@ const keyFor = {
     transition: color 0.3s var(--ease), border-color 0.3s var(--ease), background 0.3s var(--ease);
   }
 
-  .filter:hover {
-    color: var(--bone);
-    border-color: var(--bone-2);
-  }
+  .filter:hover { color: var(--bone); border-color: var(--bone-2); }
 
   .filter[aria-pressed='true'] {
     background: var(--signal);
@@ -152,10 +305,7 @@ const keyFor = {
     color: var(--ink);
   }
 
-  .prj-list {
-    display: grid;
-    gap: clamp(2.5rem, 5vw, 4rem);
-  }
+  .prj-list { display: grid; gap: clamp(2.5rem, 5vw, 4rem); }
 
   .prj {
     display: grid;
@@ -166,24 +316,11 @@ const keyFor = {
     border-top: 1px solid var(--line);
   }
 
-  .prj[hidden] {
-    display: none;
-  }
+  .prj[hidden] { display: none; }
 
-  .prj-meta {
-    display: grid;
-    gap: 1.5rem;
-    align-content: start;
-  }
-
-  .prj-head {
-    display: grid;
-    gap: 0.5rem;
-  }
-
-  .prj-title {
-    font-size: clamp(1.375rem, 2vw, 1.875rem);
-  }
+  .prj-meta { display: grid; gap: 1.5rem; align-content: start; }
+  .prj-head { display: grid; gap: 0.5rem; }
+  .prj-title { font-size: clamp(1.375rem, 2vw, 1.875rem); }
 
   .prj-facts {
     display: grid;
@@ -200,12 +337,7 @@ const keyFor = {
     align-items: baseline;
   }
 
-  .prj-facts dd {
-    margin: 0;
-    font-size: 0.875rem;
-    line-height: 1.55;
-    color: var(--bone);
-  }
+  .prj-facts dd { margin: 0; font-size: 0.875rem; line-height: 1.55; color: var(--bone); }
 
   .prj-challenge {
     display: grid;
@@ -214,25 +346,19 @@ const keyFor = {
     border-top: 1px solid var(--line);
   }
 
-  .prj-challenge p {
-    color: var(--bone-2);
-    font-size: 0.9375rem;
-    line-height: 1.62;
-  }
+  .prj-challenge p { color: var(--bone-2); font-size: 0.9375rem; line-height: 1.62; }
 
-  .empty {
-    padding-top: 3rem;
-    color: var(--muted);
+  .empty { padding-top: 3rem; color: var(--muted); }
+
+  @media (max-width: 1080px) {
+    .case-body { grid-template-columns: 1fr; }
   }
 
   @media (max-width: 980px) {
-    .prj {
-      grid-template-columns: 1fr;
-    }
-    .prj-facts div {
-      grid-template-columns: 1fr;
-      gap: 0.2rem;
-    }
+    .case-head,
+    .grid-head,
+    .prj { grid-template-columns: 1fr; }
+    .prj-facts div { grid-template-columns: 1fr; gap: 0.2rem; }
   }
 </style>
 

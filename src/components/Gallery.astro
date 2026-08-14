@@ -1,0 +1,380 @@
+---
+import { Image } from 'astro:assets';
+
+// A lead image plus a strip. Any image opens full size in a lightbox.
+const { images = [], name = '' } = Astro.props;
+const [lead, ...rest] = images;
+---
+
+<div class="gal" data-gal>
+  <figure class="gal-lead">
+    <button class="gal-open" type="button" data-i="0" aria-label={`Open ${lead.alt} full size`}>
+      <Image src={lead.src} alt={lead.alt} widths={[700, 1200, 1800]} sizes="(max-width: 980px) 100vw, 62vw" quality={82} />
+      {lead.tag && <span class={`tag ${lead.tag === 'Visualisation' ? 'tag-vis' : ''}`}>{lead.tag}</span>}
+      <span class="gal-zoom" aria-hidden="true"><i></i><i></i></span>
+    </button>
+  </figure>
+
+  <ul class="gal-strip">
+    {rest.map((im, i) => (
+      <li>
+        <button class="gal-open" type="button" data-i={i + 1} aria-label={`Open ${im.alt} full size`}>
+          <Image src={im.src} alt={im.alt} widths={[300, 600]} sizes="(max-width: 980px) 33vw, 16vw" quality={78} />
+          {im.tag && <span class={`tag ${im.tag === 'Visualisation' ? 'tag-vis' : ''}`}>{im.tag}</span>}
+        </button>
+      </li>
+    ))}
+  </ul>
+
+  <!-- Full size sources, read by the lightbox -->
+  <script type="application/json" class="gal-data" set:html={JSON.stringify(
+    images.map((im) => ({ src: im.src.src, w: im.src.width, h: im.src.height, alt: im.alt, tag: im.tag || '' }))
+  )} />
+</div>
+
+<style>
+  .gal {
+    display: grid;
+    gap: var(--gap);
+  }
+
+  .gal-open {
+    display: block;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: var(--surface);
+    cursor: zoom-in;
+    position: relative;
+    overflow: hidden;
+    line-height: 0;
+  }
+
+  .gal-lead :global(img) {
+    width: 100%;
+    height: clamp(300px, 42vw, 620px);
+    object-fit: cover;
+    transition: transform 1.1s var(--ease);
+  }
+
+  .gal-lead .gal-open:hover :global(img) {
+    transform: scale(1.03);
+  }
+
+  .gal-strip {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: var(--gap);
+  }
+
+  .gal-strip :global(img) {
+    width: 100%;
+    height: clamp(80px, 9vw, 130px);
+    object-fit: cover;
+    transition: transform 0.9s var(--ease), opacity 0.35s var(--ease);
+    opacity: 0.82;
+  }
+
+  .gal-strip .gal-open:hover :global(img) {
+    transform: scale(1.06);
+    opacity: 1;
+  }
+
+  .gal-open:focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 2px;
+  }
+
+  .tag {
+    position: absolute;
+    left: 0.6rem;
+    bottom: 0.6rem;
+    font-family: var(--mono);
+    font-size: 0.5625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.5rem;
+    background: color-mix(in srgb, var(--ink) 80%, transparent);
+    backdrop-filter: blur(6px);
+    color: var(--bone-2);
+    border-left: 2px solid var(--signal);
+    line-height: 1;
+  }
+
+  .tag-vis {
+    border-left-color: var(--muted);
+  }
+
+  .gal-lead .tag {
+    left: 0.9rem;
+    bottom: 0.9rem;
+    font-size: 0.625rem;
+    padding: 0.35rem 0.6rem;
+  }
+
+  .gal-zoom {
+    position: absolute;
+    right: 0.9rem;
+    bottom: 0.9rem;
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    background: color-mix(in srgb, var(--ink) 78%, transparent);
+    backdrop-filter: blur(6px);
+    transition: background 0.3s var(--ease);
+  }
+
+  .gal-open:hover .gal-zoom {
+    background: var(--signal);
+  }
+
+  .gal-zoom i {
+    grid-area: 1 / 1;
+    background: var(--signal);
+    transition: background 0.3s var(--ease);
+  }
+
+  .gal-open:hover .gal-zoom i {
+    background: var(--ink);
+  }
+
+  .gal-zoom i:first-child { width: 13px; height: 1.5px; }
+  .gal-zoom i:last-child { width: 1.5px; height: 13px; }
+
+  @media (max-width: 980px) {
+    .gal-strip { grid-template-columns: repeat(4, 1fr); }
+  }
+</style>
+
+<style is:global>
+  .lightbox {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    background: color-mix(in srgb, #000 92%, transparent);
+    backdrop-filter: blur(8px);
+    opacity: 0;
+    transition: opacity 0.3s var(--ease);
+  }
+
+  .lightbox.is-on { opacity: 1; }
+  .lightbox[hidden] { display: none; }
+
+  .lb-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem clamp(1rem, 3vw, 2rem);
+  }
+
+  .lb-count {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    color: var(--bone-2);
+  }
+
+  .lb-count b { color: var(--signal); font-weight: 400; }
+
+  .lb-close,
+  .lb-nav {
+    width: 44px;
+    height: 44px;
+    display: grid;
+    place-items: center;
+    background: none;
+    border: 1px solid var(--line-lift);
+    color: var(--bone);
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.25s var(--ease), color 0.25s var(--ease), border-color 0.25s var(--ease);
+  }
+
+  .lb-close:hover,
+  .lb-nav:hover,
+  .lb-close:focus-visible,
+  .lb-nav:focus-visible {
+    background: var(--signal);
+    border-color: var(--signal);
+    color: var(--ink);
+  }
+
+  .lb-close i {
+    grid-area: 1 / 1;
+    width: 15px;
+    height: 1.5px;
+    background: currentColor;
+  }
+
+  .lb-close i:first-child { transform: rotate(45deg); }
+  .lb-close i:last-child { transform: rotate(-45deg); }
+
+  .lb-nav i {
+    width: 9px;
+    height: 9px;
+    border-top: 1.5px solid currentColor;
+    border-right: 1.5px solid currentColor;
+  }
+
+  .lb-prev i { transform: rotate(-135deg) translate(-2px, -2px); }
+  .lb-next i { transform: rotate(45deg) translate(-2px, -2px); }
+
+  /* minmax(0, 1fr) on both axes gives the image a definite box to fit inside,
+     otherwise it sizes to its intrinsic height and pushes the caption off. */
+  .lb-stage {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-rows: minmax(0, 1fr);
+    align-items: center;
+    gap: clamp(0.5rem, 2vw, 1.5rem);
+    padding-inline: clamp(0.5rem, 3vw, 2rem);
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .lb-img {
+    justify-self: center;
+    align-self: center;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    animation: lbIn 0.35s var(--ease) both;
+  }
+
+  @keyframes lbIn {
+    from { opacity: 0; transform: scale(0.985); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .lb-foot {
+    padding: 1rem clamp(1rem, 3vw, 2rem) 1.5rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+  }
+
+  .lb-cap {
+    font-size: 0.875rem;
+    color: var(--bone-2);
+    max-width: 70ch;
+  }
+
+  .lb-tag {
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--signal);
+    white-space: nowrap;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .lightbox, .lb-img { transition: none; animation: none; }
+  }
+</style>
+
+<script>
+  (() => {
+    if (document.querySelector('.lightbox')) return;
+
+    const box = document.createElement('div');
+    box.className = 'lightbox';
+    box.hidden = true;
+    box.setAttribute('role', 'dialog');
+    box.setAttribute('aria-modal', 'true');
+    box.setAttribute('aria-label', 'Project image viewer');
+    box.innerHTML = `
+      <div class="lb-bar">
+        <span class="lb-count"><b class="lb-i">1</b> / <span class="lb-n">1</span></span>
+        <button class="lb-close" type="button" aria-label="Close viewer"><i></i><i></i></button>
+      </div>
+      <div class="lb-stage">
+        <button class="lb-nav lb-prev" type="button" aria-label="Previous image"><i></i></button>
+        <img class="lb-img" alt="" />
+        <button class="lb-nav lb-next" type="button" aria-label="Next image"><i></i></button>
+      </div>
+      <div class="lb-foot"><p class="lb-cap"></p><span class="lb-tag"></span></div>`;
+    document.body.appendChild(box);
+
+    const img = box.querySelector('.lb-img');
+    const cap = box.querySelector('.lb-cap');
+    const tag = box.querySelector('.lb-tag');
+    const idxEl = box.querySelector('.lb-i');
+    const nEl = box.querySelector('.lb-n');
+
+    let set = [];
+    let i = 0;
+    let opener = null;
+
+    const render = () => {
+      const it = set[i];
+      img.src = it.src;
+      img.alt = it.alt;
+      img.width = it.w;
+      img.height = it.h;
+      cap.textContent = it.alt;
+      tag.textContent = it.tag;
+      idxEl.textContent = String(i + 1);
+      nEl.textContent = String(set.length);
+      // restart the fade
+      img.style.animation = 'none';
+      void img.offsetWidth;
+      img.style.animation = '';
+    };
+
+    const open = (data, start, from) => {
+      set = data;
+      i = start;
+      opener = from;
+      box.hidden = false;
+      requestAnimationFrame(() => box.classList.add('is-on'));
+      document.body.style.overflow = 'hidden';
+      render();
+      box.querySelector('.lb-close').focus();
+    };
+
+    const close = () => {
+      box.classList.remove('is-on');
+      document.body.style.overflow = '';
+      setTimeout(() => { box.hidden = true; }, 300);
+      opener?.focus();
+    };
+
+    const step = (d) => { i = (i + d + set.length) % set.length; render(); };
+
+    box.querySelector('.lb-close').addEventListener('click', close);
+    box.querySelector('.lb-prev').addEventListener('click', () => step(-1));
+    box.querySelector('.lb-next').addEventListener('click', () => step(1));
+    box.addEventListener('click', (e) => { if (e.target === box || e.target.classList.contains('lb-stage')) close(); });
+
+    document.addEventListener('keydown', (e) => {
+      if (box.hidden) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') step(-1);
+      if (e.key === 'ArrowRight') step(1);
+      if (e.key === 'Tab') {
+        // keep focus inside the dialog
+        const f = [...box.querySelectorAll('button')];
+        const first = f[0];
+        const last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+
+    document.querySelectorAll('[data-gal]').forEach((gal) => {
+      const data = JSON.parse(gal.querySelector('.gal-data').textContent);
+      gal.querySelectorAll('.gal-open').forEach((btn) => {
+        btn.addEventListener('click', () => open(data, Number(btn.dataset.i), btn));
+      });
+    });
+  })();
+</script>

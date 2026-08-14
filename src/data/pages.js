@@ -263,9 +263,10 @@ export const illustrativeRegister = [
   {
     group: 'Projects page',
     items: [
-      { what: 'All six projects', where: '/projects', now: 'Six invented jobs with invented suburbs, timeframes and challenges', need: 'Real projects, or delete the page until there are some' },
+      { what: 'The six before and after comparisons', where: '/projects, below the two real case studies', now: 'Six invented jobs with invented suburbs, timeframes and challenges', need: 'Real projects, or delete the section and keep only the real case studies' },
       { what: 'All before and after images', where: '/projects', now: 'Generated images of jobs that did not happen', need: 'Real before and after photographs' },
-      { what: 'Suburb names on projects', where: '/projects', now: 'Northmead, Carlingford, Castle Hill, Epping, Ryde, Blacktown, all invented', need: 'Real suburbs' },
+      { what: 'Suburb names on the six comparisons', where: '/projects', now: 'Northmead, Carlingford, Castle Hill, Epping, Ryde, Blacktown, all invented', need: 'Real suburbs' },
+      { what: 'Maison De La Mer and the office fit out', where: '/projects, top of page', now: 'Real jobs, real photographs, nothing to replace', need: 'Nothing. Confirm the two written scope descriptions are accurate' },
     ],
   },
   {
@@ -298,5 +299,43 @@ export const illustrativeRegister = [
       { what: 'Quote form delivery', where: '/contact', now: 'Posts to the API but no email is sent', need: 'RESEND_API_KEY set in Vercel and a verified sender domain' },
       { what: 'Service area map', where: '/contact', now: 'Region list instead of a map', need: 'Decide whether an embedded map is wanted, it adds a third party script' },
     ],
+  },
+];
+
+// The two real projects. These are actual jobs with actual photographs, so
+// they lead the projects page and are kept clearly separate from the
+// illustrative set below them.
+export const realProjects = [
+  {
+    slug: 'maison-de-la-mer',
+    name: 'Maison De La Mer',
+    kind: 'Full apartment renovation',
+    meta: [
+      ['Scope', 'Kitchen, bathroom, flooring, joinery, panelling'],
+      ['Duration', 'Twelve months'],
+      ['Finish', 'Custom throughout'],
+    ],
+    blurb: [
+      'An absolute beachfront apartment taken back to structure and rebuilt over twelve months. Every piece of joinery was made to a single design theme rather than bought in, which is what took the programme out to a year.',
+      'The stone island is mitred on all visible edges so the veining runs continuously around the corner, the wall panelling is set out to centre on the room rather than the walls, and the engineered timber runs unbroken through the whole floor plan with no thresholds.',
+    ],
+    challenge:
+      'Working at height in an occupied residential tower meant every sheet of stone, every cabinet and every board came up in a single service lift on a booking. The programme was built around lift access rather than around the trades, which is the opposite of how a house is run.',
+  },
+  {
+    slug: 'commercial-office-fit-out',
+    name: 'Commercial office fit out',
+    kind: 'Commercial, Sydney',
+    meta: [
+      ['Scope', 'Joinery, tiling, panelling, bathroom, flooring'],
+      ['Type', 'Commercial fit out'],
+      ['Built from', 'Approved renders'],
+    ],
+    blurb: [
+      'A Sydney office taken from design visualisation through to completed fit out. Panelled meeting rooms, patterned floor tiling, a full bathroom and custom joinery throughout.',
+      'The gallery below mixes the approved renders with photographs of the finished rooms, each one labelled so you can tell which is which. It is the fairest way to show how closely a build tracks its drawings, and it is worth comparing the third and fourth images, which are the same room before and after it existed.',
+    ],
+    challenge:
+      'Commercial fit outs run to a fixed handover date because the tenant has staff arriving. The tiling and joinery were sequenced to run in parallel in different rooms rather than end to end, which is the only way that date holds.',
   },
 ];
