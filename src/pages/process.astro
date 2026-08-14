@@ -1,0 +1,158 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Footer from '../components/Footer.astro';
+import heroImg from '../assets/pages/hero-process.webp';
+import chalk from '../assets/gen/setout-chalkline.webp';
+import { process } from '../data/pages.js';
+---
+
+<Base
+  title="Our Process | From first visit to handover"
+  description="Six steps, in order, every time. Initial consultation, site inspection, design and quote, material selection, construction and final handover."
+>
+  <Header />
+  <main id="main">
+    <PageHero
+      eyebrow='<span class="annot-signal">Process</span> · Six steps'
+      lines={['From the', 'first visit to', '<em>handover.</em>']}
+      lede="Each stage has to finish before the next one starts. You always know which one you are in and what happens next."
+      image={heroImg}
+      imageAlt="Architectural plans on a dark table with a yellow spirit level holding one corner"
+      cta={{ label: 'Book a site visit', href: '/contact' }}
+      secondary={{ label: 'See our services', href: '/services' }}
+    />
+
+    <section class="section" data-reveal>
+      <div class="shell">
+        <ol class="prc-list">
+          <span class="prc-spine" aria-hidden="true"><i></i></span>
+          {process.map((s) => (
+            <li class="step" data-reveal>
+              <span class="step-n display">{s.n}</span>
+              <span class="step-dot" aria-hidden="true"></span>
+              <div class="step-body">
+                <h2 class="display step-title">{s.title}</h2>
+                <p class="step-txt">{s.body}</p>
+              </div>
+              <span class="annot step-meta">{s.meta}</span>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      <figure class="band rise">
+        <Image src={chalk} alt="A chalk line snapped across a subfloor leaving a straight yellow setout mark" widths={[1200, 2000]} sizes="100vw" quality={78} />
+        <figcaption class="annot"><span class="annot-signal">Step three</span> · every job starts with a line on the floor</figcaption>
+      </figure>
+    </section>
+
+    <CtaBand
+      title="Start at step one."
+      body="A conversation about what you want to end up with and what you want to spend. Free, and we will tell you if those two things do not meet."
+    />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .prc-list { position: relative; display: grid; }
+
+  .prc-spine {
+    position: absolute; left: 5.25rem; top: 0.75rem; bottom: 0.75rem;
+    width: 1px; background: var(--line);
+  }
+
+  .prc-spine i {
+    position: absolute; inset: 0 auto 0 0; width: 1px; background: var(--signal);
+    transform: scaleY(var(--fill, 0)); transform-origin: top; transition: transform 0.25s linear;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 4rem 2.5rem minmax(0, 1fr) minmax(0, 15rem);
+    align-items: start;
+    padding-block: clamp(1.75rem, 3.4vw, 2.75rem);
+    opacity: 0; transform: translateY(22px);
+    transition: opacity 0.8s var(--ease), transform 0.8s var(--ease);
+  }
+
+  .step.is-in { opacity: 1; transform: none; }
+
+  .step-n {
+    font-variation-settings: 'wdth' 112, 'wght' 800;
+    font-size: clamp(1.5rem, 2.6vw, 2.25rem);
+    color: var(--line-lift); line-height: 1; padding-top: 0.1em;
+  }
+
+  .step.is-in .step-n { color: var(--bone); transition: color 0.6s var(--ease) 0.2s; }
+
+  .step-dot {
+    width: 9px; height: 9px; background: var(--ink);
+    border: 1px solid var(--line-lift); margin: 0.55rem auto 0;
+    transform: rotate(45deg);
+    transition: background 0.5s var(--ease), border-color 0.5s var(--ease);
+  }
+
+  .step.is-in .step-dot { background: var(--signal); border-color: var(--signal); }
+
+  .step-body {
+    padding-left: clamp(0.75rem, 2vw, 2rem);
+    display: grid; gap: 0.6rem; max-width: 62ch;
+  }
+
+  .step-title {
+    font-variation-settings: 'wdth' 100, 'wght' 700;
+    font-size: clamp(1.25rem, 2vw, 1.875rem);
+    text-transform: none; letter-spacing: -0.015em; line-height: 1.12;
+  }
+
+  .step-txt { color: var(--bone-2); font-size: 0.9375rem; line-height: 1.62; }
+
+  .step-meta { color: var(--signal); text-align: right; padding-top: 0.65rem; line-height: 1.6; }
+
+  .band { margin-top: clamp(3rem, 7vw, 6rem); position: relative; }
+
+  .band :global(img) {
+    width: 100%; height: clamp(240px, 38vw, 520px); object-fit: cover;
+  }
+
+  .band figcaption {
+    position: absolute; left: var(--pad-x); bottom: 1.25rem;
+    padding: 0.6rem 0.9rem;
+    background: color-mix(in srgb, var(--ink) 72%, transparent);
+    backdrop-filter: blur(6px);
+  }
+
+  @media (max-width: 760px) {
+    .prc-spine { left: 3.1rem; }
+    .step { grid-template-columns: 2.5rem 1.25rem minmax(0, 1fr); }
+    .step-n { font-size: 1.25rem; }
+    .step-meta { grid-column: 3; text-align: left; padding: 0.6rem 0 0 clamp(0.75rem, 2vw, 2rem); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .step { opacity: 1; transform: none; }
+  }
+</style>
+
+<script>
+  const list = document.querySelector('.prc-list');
+  const fill = list?.querySelector('.prc-spine i');
+  if (list && fill && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let ticking = false;
+    const update = () => {
+      const r = list.getBoundingClientRect();
+      const p = (window.innerHeight * 0.72 - r.top) / r.height;
+      fill.style.setProperty('--fill', String(Math.max(0, Math.min(1, p))));
+      ticking = false;
+    };
+    const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll, { passive: true });
+  }
+</script>

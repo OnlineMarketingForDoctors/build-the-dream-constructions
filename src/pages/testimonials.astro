@@ -1,0 +1,146 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Footer from '../components/Footer.astro';
+import heroImg from '../assets/pages/hero-testimonials.webp';
+import { testimonials } from '../data/site.js';
+---
+
+<Base
+  title="Customer Reviews | Build The Dream Constructions"
+  description="What Sydney homeowners say about working with Build The Dream Constructions, in their own words."
+>
+  <Header />
+  <main id="main">
+    <PageHero
+      eyebrow='<span class="annot-signal">Reviews</span> · In their words'
+      lines={['What people', '<em>actually</em>', 'say.']}
+      lede="Unedited, from customers who let us use their names. Every one of them will take a call if you want to check."
+      image={heroImg}
+      imageAlt="Detail of a completed bathroom with honed stone tiling and warm light"
+      cta={{ label: 'Request a quote', href: '/contact' }}
+      secondary={{ label: 'See the work', href: '/projects' }}
+    />
+
+    <section class="section" data-reveal>
+      <div class="shell">
+        <div class="setout">
+          <span class="annot">{testimonials.length} reviews</span>
+          <span class="setout-rule"></span>
+        </div>
+
+        <ul class="rv-list">
+          {testimonials.map((t, i) => (
+            <li class={`rv ${i === 0 ? 'is-lead' : ''}`} data-reveal>
+              <span class="rv-mark" aria-hidden="true"></span>
+              <blockquote>
+                <p>{t.quote}</p>
+              </blockquote>
+              <footer class="rv-foot">
+                <cite>{t.name}</cite>
+                <span class="annot annot-signal">{t.service}</span>
+              </footer>
+            </li>
+          ))}
+        </ul>
+
+        <div class="rv-verify rise">
+          <h2 class="display rv-verify-title">Want to check?</h2>
+          <p>
+            We will put you in touch with any of the people above, and we will give you the
+            address of a recent job in your area so you can drive past and look at it. Ask
+            any builder for that and see what happens.
+          </p>
+          <p class="annot rv-note">
+            Google reviews will be linked here once the Google Business Profile is live.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <CtaBand />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .rv-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--gap);
+  }
+
+  .rv {
+    background: var(--surface);
+    border-left: 2px solid var(--line-lift);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    display: grid;
+    gap: 1.5rem;
+    align-content: start;
+    opacity: 0;
+    transform: translateY(22px);
+    transition: opacity 0.8s var(--ease), transform 0.8s var(--ease), border-color 0.4s var(--ease);
+  }
+
+  .rv.is-in { opacity: 1; transform: none; }
+  .rv:hover { border-left-color: var(--signal); }
+
+  .rv.is-lead {
+    grid-column: span 2;
+    border-left-color: var(--signal);
+  }
+
+  .rv-mark { width: 26px; height: 2px; background: var(--signal); }
+
+  .rv blockquote { margin: 0; }
+
+  .rv p {
+    font-family: var(--display);
+    font-variation-settings: 'wdth' 96, 'wght' 450;
+    font-size: clamp(1rem, 1.3vw, 1.25rem);
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+    color: var(--bone);
+  }
+
+  .rv.is-lead p { font-size: clamp(1.125rem, 1.8vw, 1.6rem); }
+
+  .rv-foot {
+    display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.35rem 1rem;
+    padding-top: 1.25rem; border-top: 1px solid var(--line-lift);
+  }
+
+  .rv-foot cite {
+    font-style: normal; font-family: var(--display);
+    font-variation-settings: 'wdth' 104, 'wght' 700;
+    text-transform: uppercase; font-size: 0.9375rem;
+  }
+
+  .rv-verify {
+    margin-top: clamp(3rem, 6vw, 5rem);
+    padding-top: clamp(2rem, 4vw, 3rem);
+    border-top: 1px solid var(--line);
+    display: grid; gap: 1rem; max-width: 60ch;
+  }
+
+  .rv-verify-title {
+    font-variation-settings: 'wdth' 106, 'wght' 750;
+    font-size: clamp(1.375rem, 2.2vw, 2rem);
+    text-transform: uppercase;
+  }
+
+  .rv-verify p { color: var(--bone-2); font-size: 0.9375rem; line-height: 1.62; }
+
+  .rv-note { color: var(--muted); text-transform: none; letter-spacing: 0.02em; font-size: 0.75rem; }
+
+  @media (max-width: 860px) {
+    .rv-list { grid-template-columns: 1fr; }
+    .rv.is-lead { grid-column: span 1; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .rv { opacity: 1; transform: none; }
+  }
+</style>

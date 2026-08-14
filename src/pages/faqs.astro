@@ -1,0 +1,157 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Footer from '../components/Footer.astro';
+import heroImg from '../assets/pages/hero-faq.webp';
+import { faqs } from '../data/pages.js';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+---
+
+<Base
+  title="Frequently Asked Questions | Build The Dream Constructions"
+  description="Costs, timeframes, licensing, warranties, council approvals and what happens if the price changes partway through a renovation."
+>
+  <Header />
+  <main id="main">
+    <PageHero
+      eyebrow='<span class="annot-signal">FAQs</span> · Straight answers'
+      lines={['The questions', 'people ask', '<em>before</em> they sign.']}
+      lede="Costs, timeframes, licensing and what happens when something unexpected turns up behind a wall."
+      image={heroImg}
+      imageAlt="Contract documents and a pen on a dark desk under a warm lamp"
+      cta={{ label: 'Ask us something else', href: '/contact' }}
+      secondary={{ label: 'See our process', href: '/process' }}
+    />
+
+    <div class="notice shell" role="note">
+      <p class="annot">
+        <span class="annot-signal">Placeholder content</span> · The cost and duration figures
+        below are industry estimates, not Bill's pricing. Replace before launch.
+      </p>
+    </div>
+
+    <section class="section" data-reveal>
+      <div class="shell faq-shell">
+        <div class="setout">
+          <span class="annot">{faqs.length} questions</span>
+          <span class="setout-rule"></span>
+        </div>
+
+        <ul class="faq-list">
+          {faqs.map((f, i) => (
+            <li class="faq rise">
+              <details name="faq" open={i === 0}>
+                <summary>
+                  <span class="faq-q display">{f.q}</span>
+                  <span class="faq-icon" aria-hidden="true"><i></i><i></i></span>
+                </summary>
+                <div class="faq-a">
+                  <p>{f.a}</p>
+                  {f.illustrative && <p class="faq-flag annot">Placeholder figure, replace before launch</p>}
+                </div>
+              </details>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <CtaBand
+      title="Still got a question?"
+      body="Call and ask. You will speak to someone who has been on a site this week, not a call centre."
+    />
+  </main>
+  <Footer />
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Base>
+
+<style>
+  .notice { padding-top: 2rem; }
+
+  .notice p {
+    border-left: 2px solid var(--signal);
+    padding: 0.85rem 1rem; background: var(--surface);
+    text-transform: none; letter-spacing: 0.02em;
+    font-size: 0.75rem; line-height: 1.7; color: var(--bone-2);
+  }
+
+  .faq-shell { max-width: 66rem; }
+
+  .faq-list { display: grid; }
+
+  .faq { border-top: 1px solid var(--line); }
+  .faq:last-child { border-bottom: 1px solid var(--line); }
+
+  details summary {
+    list-style: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    padding-block: clamp(1.1rem, 2.2vw, 1.6rem);
+  }
+
+  details summary::-webkit-details-marker { display: none; }
+
+  .faq-q {
+    font-variation-settings: 'wdth' 100, 'wght' 650;
+    font-size: clamp(1.0625rem, 1.6vw, 1.375rem);
+    text-transform: none;
+    letter-spacing: -0.012em;
+    line-height: 1.25;
+    transition: color 0.3s var(--ease);
+  }
+
+  details[open] .faq-q,
+  summary:hover .faq-q { color: var(--signal); }
+
+  .faq-icon {
+    position: relative;
+    width: 14px; height: 14px; flex: 0 0 auto;
+  }
+
+  .faq-icon i {
+    position: absolute; background: var(--signal); transition: transform 0.35s var(--ease-snap);
+  }
+
+  .faq-icon i:first-child { top: 6px; left: 0; width: 14px; height: 1.5px; }
+  .faq-icon i:last-child { left: 6px; top: 0; width: 1.5px; height: 14px; }
+
+  details[open] .faq-icon i:last-child { transform: scaleY(0); }
+
+  .faq-a {
+    padding-bottom: clamp(1.25rem, 2.4vw, 1.75rem);
+    max-width: 68ch;
+    display: grid;
+    gap: 0.75rem;
+    animation: faqIn 0.45s var(--ease) both;
+  }
+
+  @keyframes faqIn {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .faq-a p { color: var(--bone-2); font-size: 0.9375rem; line-height: 1.68; }
+
+  .faq-flag {
+    color: var(--muted); text-transform: none; letter-spacing: 0.02em;
+    font-size: 0.6875rem; border-left: 2px solid var(--line-lift); padding-left: 0.75rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .faq-a { animation: none; }
+  }
+</style>

@@ -1,0 +1,170 @@
+---
+import { Image } from 'astro:assets';
+
+const { before, after, alt = '', label = '' } = Astro.props;
+---
+
+<figure class="ba" data-ba>
+  <div class="ba-frame">
+    <div class="ba-img ba-after">
+      <Image src={after} alt={`${alt} after renovation`} widths={[600, 1000, 1600]} sizes="(max-width: 900px) 100vw, 50vw" quality={80} />
+      <span class="ba-tag ba-tag-after">After</span>
+    </div>
+
+    <div class="ba-img ba-before" data-clip>
+      <Image src={before} alt={`${alt} before renovation`} widths={[600, 1000, 1600]} sizes="(max-width: 900px) 100vw, 50vw" quality={80} />
+      <span class="ba-tag ba-tag-before">Before</span>
+    </div>
+
+    <div class="ba-handle" data-handle aria-hidden="true">
+      <span class="ba-handle-line"></span>
+      <span class="ba-handle-grip">
+        <i></i><i></i>
+      </span>
+    </div>
+
+    <label class="ba-sr" for={`ba-${label}`}>Reveal the before image</label>
+    <input
+      class="ba-range"
+      id={`ba-${label}`}
+      type="range"
+      min="0"
+      max="100"
+      value="50"
+      step="0.1"
+      data-range
+      aria-label="Drag to compare before and after"
+    />
+  </div>
+</figure>
+
+<style>
+  .ba {
+    margin: 0;
+  }
+
+  .ba-frame {
+    position: relative;
+    overflow: hidden;
+    background: var(--surface);
+    isolation: isolate;
+    line-height: 0;
+  }
+
+  .ba-img {
+    position: relative;
+  }
+
+  .ba-img :global(img) {
+    width: 100%;
+    height: clamp(240px, 34vw, 460px);
+    object-fit: cover;
+    display: block;
+  }
+
+  /* The before image sits on top and is clipped from the right. */
+  .ba-before {
+    position: absolute;
+    inset: 0;
+    clip-path: inset(0 calc(100% - var(--pos, 50%)) 0 0);
+  }
+
+  .ba-tag {
+    position: absolute;
+    bottom: 0.75rem;
+    font-family: var(--mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.35rem 0.6rem;
+    background: color-mix(in srgb, var(--ink) 82%, transparent);
+    backdrop-filter: blur(6px);
+    color: var(--bone-2);
+    line-height: 1;
+  }
+
+  .ba-tag-before {
+    left: 0.75rem;
+    border-left: 2px solid var(--muted);
+  }
+
+  .ba-tag-after {
+    right: 0.75rem;
+    border-right: 2px solid var(--signal);
+  }
+
+  .ba-handle {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: var(--pos, 50%);
+    width: 0;
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .ba-handle-line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: -1px;
+    width: 2px;
+    background: var(--signal);
+  }
+
+  .ba-handle-grip {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 40px;
+    height: 40px;
+    background: var(--signal);
+    display: grid;
+    grid-auto-flow: column;
+    gap: 4px;
+    place-content: center;
+  }
+
+  .ba-handle-grip i {
+    width: 2px;
+    height: 12px;
+    background: var(--ink);
+  }
+
+  .ba-range {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+    z-index: 4;
+  }
+
+  .ba-range:focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 3px;
+  }
+
+  .ba-sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+</style>
+
+<script>
+  document.querySelectorAll('[data-ba]').forEach((el) => {
+    const range = el.querySelector('[data-range]');
+    const frame = el.querySelector('.ba-frame');
+    if (!range || !frame) return;
+    const set = () => frame.style.setProperty('--pos', `${range.value}%`);
+    set();
+    range.addEventListener('input', set);
+  });
+</script>

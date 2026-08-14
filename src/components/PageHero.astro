@@ -1,0 +1,243 @@
+---
+import { Image } from 'astro:assets';
+
+const {
+  eyebrow,
+  lines = [],
+  lede,
+  image,
+  imageAlt = '',
+  cta = { label: 'Request a quote', href: '/contact' },
+  secondary,
+  facts = [],
+  position = '50% 50%',
+} = Astro.props;
+---
+
+<section class="phero">
+  <div class="phero-media">
+    <Image
+      src={image}
+      alt={imageAlt}
+      widths={[900, 1400, 2000, 2600]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      quality={82}
+      style={`object-position:${position}`}
+    />
+    <div class="phero-scrim"></div>
+    <div class="phero-scrim-2"></div>
+  </div>
+
+  <div class="phero-in shell">
+    {eyebrow && <p class="annot phero-eyebrow" set:html={eyebrow} />}
+
+    <h1 class="display display-xl phero-h">
+      {lines.map((l) => (
+        <span class="ln"><span set:html={l} /></span>
+      ))}
+    </h1>
+
+    <div class="phero-tail">
+      {lede && <p class="lede phero-lede">{lede}</p>}
+      <div class="phero-cta">
+        <a class="btn" href={cta.href}><span>{cta.label}</span><i class="btn-arrow"></i></a>
+        {secondary && (
+          <a class="btn btn-ghost" href={secondary.href}><span>{secondary.label}</span><i class="btn-arrow"></i></a>
+        )}
+      </div>
+    </div>
+  </div>
+
+  {facts.length > 0 && (
+    <div class="phero-bar">
+      <div class="shell phero-bar-in">
+        {facts.map((f) => (
+          <div class="fact">
+            <span class="annot">{f.k}</span>
+            <span class="fact-v">{f.v}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  )}
+</section>
+
+<style>
+  .phero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-top: 9rem;
+    overflow: hidden;
+  }
+
+  .phero-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .phero-media :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    animation: pheroIn 2.2s var(--ease) both;
+  }
+
+  @keyframes pheroIn {
+    from { transform: scale(1.06); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+
+  .phero-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      100deg,
+      color-mix(in srgb, var(--ink) 88%, transparent) 4%,
+      color-mix(in srgb, var(--ink) 68%, transparent) 36%,
+      color-mix(in srgb, var(--ink) 30%, transparent) 66%,
+      color-mix(in srgb, var(--ink) 6%, transparent) 100%
+    );
+  }
+
+  .phero-scrim-2 {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 46%;
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--ink) 86%, transparent) 2%,
+      transparent 100%
+    );
+  }
+
+  .phero-in {
+    position: relative;
+    z-index: 2;
+    padding-bottom: clamp(2.5rem, 6vh, 5rem);
+    width: 100%;
+  }
+
+  .phero-eyebrow {
+    margin-bottom: clamp(1.25rem, 3vh, 2.25rem);
+    animation: fadeUp 0.9s var(--ease) 0.3s both;
+  }
+
+  .phero-h {
+    margin-bottom: clamp(1.75rem, 4vh, 2.75rem);
+    max-width: 16ch;
+  }
+
+  .phero-h :global(em) {
+    font-style: normal;
+    color: var(--signal);
+  }
+
+  .ln {
+    display: block;
+    overflow: hidden;
+  }
+
+  .ln > :global(span) {
+    display: block;
+    transform: translateY(102%);
+    animation: lineUp 1.05s var(--ease-snap) both;
+  }
+
+  .ln:nth-child(1) > :global(span) { animation-delay: 0.38s; }
+  .ln:nth-child(2) > :global(span) { animation-delay: 0.48s; }
+  .ln:nth-child(3) > :global(span) { animation-delay: 0.58s; }
+  .ln:nth-child(4) > :global(span) { animation-delay: 0.68s; }
+
+  @keyframes lineUp {
+    to { transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: none; }
+  }
+
+  .phero-tail {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    animation: fadeUp 1s var(--ease) 1s both;
+  }
+
+  .phero-lede {
+    max-width: 46ch;
+  }
+
+  .phero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .phero-bar {
+    position: relative;
+    z-index: 2;
+    border-top: 1px solid var(--line);
+    background: color-mix(in srgb, var(--ink) 55%, transparent);
+    backdrop-filter: blur(8px);
+    animation: fadeUp 1s var(--ease) 1.2s both;
+  }
+
+  .phero-bar-in {
+    display: flex;
+    align-items: center;
+    gap: clamp(1.5rem, 5vw, 4.5rem);
+    padding-block: 1.125rem;
+  }
+
+  .fact {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  .fact-v {
+    font-family: var(--display);
+    font-variation-settings: 'wdth' 104, 'wght' 700;
+    font-size: 0.9375rem;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 900px) {
+    .phero {
+      padding-top: 7rem;
+    }
+    .phero-scrim {
+      background: linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--ink) 58%, transparent) 0%,
+        color-mix(in srgb, var(--ink) 42%, transparent) 45%,
+        var(--ink) 96%
+      );
+    }
+    .fact:nth-child(n + 3) {
+      display: none;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .phero-media :global(img),
+    .phero-eyebrow,
+    .phero-tail,
+    .phero-bar {
+      animation: none;
+      opacity: 1;
+    }
+    .ln > :global(span) {
+      transform: none;
+      animation: none;
+    }
+  }
+</style>

@@ -19,7 +19,7 @@ const year = 2026;
         <h2 class="annot">Services</h2>
         <ul>
           {services.map((s) => (
-            <li><a href={`/services/${s.slug}`}>{s.name}</a></li>
+            <li><a href={`/services#${s.slug}`}>{s.name}</a></li>
           ))}
         </ul>
       </nav>
@@ -27,11 +27,12 @@ const year = 2026;
       <nav class="ftr-nav" aria-label="Company">
         <h2 class="annot">Company</h2>
         <ul>
-          <li><a href="#projects">Projects</a></li>
-          <li><a href="#why">Why us</a></li>
-          <li><a href="#process">Our process</a></li>
-          <li><a href="#areas">Service areas</a></li>
-          <li><a href="#testimonials">Reviews</a></li>
+          <li><a href="/about">About us</a></li>
+          <li><a href="/projects">Projects</a></li>
+          <li><a href="/process">Our process</a></li>
+          <li><a href="/areas">Service areas</a></li>
+          <li><a href="/testimonials">Reviews</a></li>
+          <li><a href="/faqs">FAQs</a></li>
         </ul>
       </nav>
 

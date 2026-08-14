@@ -4,11 +4,11 @@ import mark from '../assets/brand/logo-mark.png';
 import { business } from '../data/site.js';
 
 const nav = [
-  { label: 'Services', href: '#services' },
-  { label: 'Why us', href: '#why' },
-  { label: 'Projects', href: '#projects' },
-  { label: 'Process', href: '#process' },
-  { label: 'Areas', href: '#areas' },
+  { label: 'About', href: '/about' },
+  { label: 'Services', href: '/services' },
+  { label: 'Projects', href: '/projects' },
+  { label: 'Process', href: '/process' },
+  { label: 'Areas', href: '/areas' },
 ];
 ---
 
@@ -34,7 +34,7 @@ const nav = [
         <span class="tel-dot" aria-hidden="true"></span>
         {business.phone}
       </a>
-      <a class="btn hdr-cta" href="#quote"><span>Request a quote</span><i class="btn-arrow"></i></a>
+      <a class="btn hdr-cta" href="/contact"><span>Request a quote</span><i class="btn-arrow"></i></a>
     </div>
 
     <button class="burger" type="button" aria-expanded="false" aria-controls="mnav" aria-label="Open menu">
@@ -55,7 +55,7 @@ const nav = [
     {nav.map((i) => (
       <a href={i.href}>{i.label}</a>
     ))}
-    <a class="mnav-cta" href="#quote">Request a quote</a>
+    <a class="mnav-cta" href="/contact">Request a quote</a>
     <a class="mnav-tel" href={business.phoneHref}>{business.phone}</a>
   </div>
 </header>

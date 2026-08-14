@@ -1,0 +1,170 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import PageHero from '../components/PageHero.astro';
+import Quote from '../components/Quote.astro';
+import Footer from '../components/Footer.astro';
+import heroImg from '../assets/pages/hero-contact.webp';
+import { business, serviceAreas } from '../data/site.js';
+
+const total = serviceAreas.reduce((n, r) => n + r.suburbs.length, 0);
+---
+
+<Base
+  title="Contact | Build The Dream Constructions, Parramatta"
+  description="Call 0425 351 578 or request a quote. Sydney wide renovations, based in Parramatta, Monday to Friday 9am to 6pm."
+>
+  <Header />
+  <main id="main">
+    <PageHero
+      eyebrow='<span class="annot-signal">Contact</span> · Parramatta'
+      lines={['Tell us', 'about <em>the</em>', '<em>room.</em>']}
+      lede="We will come and measure it, then send a fixed written quote with the scope itemised. No cost, no obligation, and no pressure on the visit."
+      image={heroImg}
+      imageAlt="A renovated home at dusk with warm light glowing from the windows"
+      cta={{ label: 'Call ' + business.phone, href: business.phoneHref }}
+      secondary={{ label: 'Email us', href: `mailto:${business.email}` }}
+      facts={[
+        { k: 'Phone', v: business.phone },
+        { k: 'Hours', v: 'Mon to Fri, 9 to 6' },
+        { k: 'Based in', v: business.suburb },
+        { k: 'Covering', v: `${total} suburbs` },
+      ]}
+    />
+
+    <section class="section details" data-reveal>
+      <div class="shell">
+        <div class="setout">
+          <span class="annot">How to reach us</span>
+          <span class="setout-rule"></span>
+        </div>
+
+        <div class="det-grid">
+          <div class="det rise">
+            <h2 class="display det-title">Call</h2>
+            <a class="det-link" href={business.phoneHref}>{business.phone}</a>
+            <p>Quickest way to get an answer. If Bill is on a site he will call back the same day.</p>
+          </div>
+
+          <div class="det rise rise-2">
+            <h2 class="display det-title">Email</h2>
+            <a class="det-link det-link-sm" href={`mailto:${business.email}`}>{business.email}</a>
+            <p>Send photos of the room if you have them. It saves a visit at the early stage.</p>
+          </div>
+
+          <div class="det rise rise-3">
+            <h2 class="display det-title">Hours</h2>
+            <span class="det-link det-link-sm">Monday to Friday</span>
+            <p>9am to 6pm. Site visits can usually be arranged outside those hours if you work.</p>
+          </div>
+
+          <div class="det rise rise-4">
+            <h2 class="display det-title">Where we are</h2>
+            <span class="det-link det-link-sm">{business.suburb}, NSW</span>
+            <p>
+              We work from Parramatta and travel across Sydney. It is an office rather than a
+              showroom, so please call before coming by.
+            </p>
+          </div>
+        </div>
+
+        <div class="areas-strip rise">
+          <span class="annot">Areas we cover</span>
+          <ul>
+            {serviceAreas.map((r) => (
+              <li>{r.region}</li>
+            ))}
+          </ul>
+          <a class="areas-link annot annot-signal" href="/areas">See all {total} suburbs</a>
+        </div>
+      </div>
+    </section>
+
+    <Quote />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .det-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--gap);
+  }
+
+  .det {
+    background: var(--surface);
+    border-top: 2px solid var(--signal);
+    padding: clamp(1.25rem, 2.4vw, 2rem);
+    display: grid;
+    gap: 0.7rem;
+    align-content: start;
+  }
+
+  .det-title {
+    font-variation-settings: 'wdth' 100, 'wght' 700;
+    font-size: 0.8125rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .det-link {
+    font-family: var(--display);
+    font-variation-settings: 'wdth' 104, 'wght' 700;
+    font-size: 1.25rem;
+    text-transform: uppercase;
+    letter-spacing: -0.005em;
+    color: var(--bone);
+    transition: color 0.3s var(--ease);
+    word-break: break-word;
+  }
+
+  .det-link-sm { font-size: 1rem; text-transform: none; }
+
+  a.det-link:hover { color: var(--signal); }
+
+  .det p {
+    color: var(--bone-2);
+    font-size: 0.875rem;
+    line-height: 1.6;
+  }
+
+  .areas-strip {
+    margin-top: clamp(2.5rem, 5vw, 4rem);
+    padding-top: clamp(1.5rem, 3vw, 2.5rem);
+    border-top: 1px solid var(--line);
+    display: grid;
+    gap: 1rem;
+  }
+
+  .areas-strip ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+  }
+
+  .areas-strip li {
+    font-family: var(--display);
+    font-variation-settings: 'wdth' 102, 'wght' 650;
+    font-size: 1rem;
+    text-transform: uppercase;
+    color: var(--bone-2);
+  }
+
+  .areas-link {
+    text-transform: none;
+    letter-spacing: 0.04em;
+    border-bottom: 1px solid currentColor;
+    justify-self: start;
+    padding-bottom: 2px;
+  }
+
+  @media (max-width: 980px) {
+    .det-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  @media (max-width: 560px) {
+    .det-grid { grid-template-columns: 1fr; }
+  }
+</style>

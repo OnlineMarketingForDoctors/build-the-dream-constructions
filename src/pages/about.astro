@@ -1,0 +1,381 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Footer from '../components/Footer.astro';
+import heroImg from '../assets/pages/hero-about.webp';
+import billPortrait from '../assets/bill-chen.webp';
+import billOnsite from '../assets/bill-onsite.webp';
+import billWide from '../assets/bill-onsite-wide.webp';
+import craftLevel from '../assets/pages/craft-levelling.webp';
+import craftWater from '../assets/pages/craft-waterproof.webp';
+import craftSil from '../assets/pages/craft-silicone.webp';
+import { business } from '../data/site.js';
+import { about } from '../data/pages.js';
+
+const craft = [craftLevel, craftWater, craftSil];
+---
+
+<Base
+  title="About Build The Dream Constructions | Sydney renovation builder since 2008"
+  description="Bill Chen founded Build The Dream Constructions in 2008. Twelve people, Sydney wide, licensed and insured, with statutory warranties on every job."
+>
+  <Header />
+  <main id="main">
+    <PageHero
+      eyebrow='<span class="annot-signal">About</span> · Founded 2008'
+      lines={['Twelve people,', 'one <em>contract,</em>', 'no guesswork.']}
+      lede="Bill Chen started the business in 2008 after a decade on the tools. He still visits every site, and the person who quotes your job is the person who runs it."
+      image={heroImg}
+      imageAlt="A carpenter's bench with plans, a tape measure and a square under a work lamp"
+      cta={{ label: 'Request a quote', href: '/contact' }}
+      secondary={{ label: 'See our process', href: '/process' }}
+      facts={[
+        { k: 'Established', v: '2008' },
+        { k: 'Team', v: '12 people' },
+        { k: 'Covering', v: 'Sydney wide' },
+        { k: 'Licence', v: business.licence },
+      ]}
+    />
+
+    <section class="section" id="story" data-reveal>
+      <div class="shell">
+        <div class="setout">
+          <span class="annot">01 / Our story</span>
+          <span class="setout-rule"></span>
+        </div>
+        <div class="two-col">
+          <h2 class="display display-l rise">Started on<br />the tools.</h2>
+          <div class="prose rise rise-2">
+            {about.story.map((p) => <p>{p}</p>)}
+          </div>
+        </div>
+      </div>
+
+      <figure class="band rise rise-3">
+        <Image src={billWide} alt={`${business.founder} on site in an unfinished interior`} widths={[1200, 2000]} sizes="100vw" quality={80} />
+        <figcaption class="annot"><span class="annot-signal">On site</span> · {business.founder}</figcaption>
+      </figure>
+    </section>
+
+    <section class="section" id="bill" data-reveal>
+      <div class="shell">
+        <div class="setout">
+          <span class="annot">02 / Meet Bill Chen</span>
+          <span class="setout-rule"></span>
+        </div>
+
+        <div class="bill">
+          <figure class="bill-fig rise">
+            <Image src={billPortrait} alt={`${business.founder}, founder`} widths={[420, 840]} sizes="(max-width: 900px) 90vw, 420px" quality={86} />
+          </figure>
+
+          <div class="bill-body rise rise-2">
+            <h2 class="display display-m">Bill Chen</h2>
+            <p class="annot bill-role">Founder · Building since 2008</p>
+            <p>
+              Bill spent ten years on the tools before starting the business, which is
+              why the quotes tend to be specific rather than round numbers. He does the
+              site visit on most jobs and stays the point of contact through the build.
+            </p>
+            <p>
+              His view is that the trade has a trust problem it created itself, mostly by
+              being vague. So the business runs on written variations, morning messages
+              and dates that mean something.
+            </p>
+            <blockquote class="bill-quote">
+              <span class="tst-mark" aria-hidden="true"></span>
+              <p>
+                Nobody minds paying for a job done properly. What they mind is finding out
+                halfway through that the price was never real.
+              </p>
+              <cite>{business.founder}</cite>
+            </blockquote>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="mission" data-reveal>
+      <div class="shell">
+        <div class="setout">
+          <span class="annot">03 / Mission and values</span>
+          <span class="setout-rule"></span>
+        </div>
+
+        <p class="statement display rise">{about.mission}</p>
+
+        <ul class="values rise rise-2">
+          {about.values.map((v, i) => (
+            <li class="value">
+              <span class="annot value-n">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="display value-title">{v.label}</h3>
+              <p>{v.body}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <ul class="craft rise rise-3">
+        {craft.map((c, i) => (
+          <li>
+            <Image src={c} alt="Detail of preparation work on site" widths={[400, 800]} sizes="(max-width: 860px) 100vw, 33vw" quality={78} />
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="section" id="credentials" data-reveal>
+      <div class="shell">
+        <div class="setout">
+          <span class="annot">04 / Licensed, insured, warranted</span>
+          <span class="setout-rule"></span>
+        </div>
+
+        <div class="two-col">
+          <h2 class="display display-l rise">Proof,<br />not adjectives.</h2>
+          <div class="creds rise rise-2">
+            {about.credentials.map((c) => (
+              <div class="cred">
+                <h3 class="display cred-title">{c.title}</h3>
+                <p>{c.body}</p>
+              </div>
+            ))}
+            <p class="annot cred-note">
+              Licence No. <span class="annot-signal">{business.licence}</span> · Verify it on
+              the NSW Fair Trading public register before you sign anything, with us or anyone else.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <figure class="band band-short rise rise-3">
+        <Image src={billOnsite} alt={`${business.founder} holding plans in a part finished room`} widths={[1000, 1600]} sizes="100vw" quality={80} />
+      </figure>
+    </section>
+
+    <CtaBand />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .two-col {
+    display: grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap: clamp(2rem, 6vw, 6rem);
+    align-items: start;
+  }
+
+  .prose {
+    display: grid;
+    gap: 1.25rem;
+    color: var(--bone-2);
+    max-width: 60ch;
+  }
+
+  .band {
+    margin-top: clamp(3rem, 7vw, 6rem);
+    position: relative;
+  }
+
+  .band :global(img) {
+    width: 100%;
+    height: clamp(260px, 44vw, 560px);
+    object-fit: cover;
+  }
+
+  .band-short :global(img) {
+    height: clamp(220px, 32vw, 420px);
+  }
+
+  .band figcaption {
+    position: absolute;
+    left: var(--pad-x);
+    bottom: 1.25rem;
+    padding: 0.6rem 0.9rem;
+    background: color-mix(in srgb, var(--ink) 72%, transparent);
+    backdrop-filter: blur(6px);
+  }
+
+  /* Bill */
+  .bill {
+    display: grid;
+    grid-template-columns: 0.7fr 1.3fr;
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+
+  .bill-fig {
+    margin: 0;
+    border-left: 2px solid var(--signal);
+  }
+
+  .bill-fig :global(img) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .bill-body {
+    display: grid;
+    gap: 1.125rem;
+    color: var(--bone-2);
+    max-width: 58ch;
+  }
+
+  .bill-body h2 {
+    color: var(--bone);
+  }
+
+  .bill-role {
+    color: var(--signal);
+  }
+
+  .bill-quote {
+    margin: 1rem 0 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-lift);
+    display: grid;
+    gap: 1rem;
+  }
+
+  .bill-quote p {
+    font-family: var(--display);
+    font-variation-settings: 'wdth' 96, 'wght' 450;
+    font-size: clamp(1.0625rem, 1.5vw, 1.4rem);
+    line-height: 1.42;
+    color: var(--bone);
+  }
+
+  .bill-quote cite {
+    font-style: normal;
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .tst-mark {
+    width: 26px;
+    height: 2px;
+    background: var(--signal);
+    display: block;
+  }
+
+  /* Mission */
+  .statement {
+    font-variation-settings: 'wdth' 100, 'wght' 500;
+    font-size: clamp(1.25rem, 2.4vw, 2.1rem);
+    line-height: 1.32;
+    letter-spacing: -0.015em;
+    text-transform: none;
+    max-width: 30ch;
+    color: var(--bone);
+    margin-bottom: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .values {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    padding-top: clamp(1.5rem, 3vw, 2.5rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .value {
+    display: grid;
+    gap: 0.7rem;
+    align-content: start;
+  }
+
+  .value-n {
+    color: var(--signal);
+  }
+
+  .value-title {
+    font-variation-settings: 'wdth' 100, 'wght' 700;
+    font-size: 1.125rem;
+    text-transform: none;
+    letter-spacing: -0.01em;
+    line-height: 1.15;
+  }
+
+  .value p {
+    color: var(--bone-2);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .craft {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--gap);
+    margin-top: clamp(3rem, 6vw, 5rem);
+  }
+
+  .craft :global(img) {
+    width: 100%;
+    height: clamp(200px, 26vw, 380px);
+    object-fit: cover;
+  }
+
+  /* Credentials */
+  .creds {
+    display: grid;
+    gap: 1.75rem;
+  }
+
+  .cred {
+    display: grid;
+    gap: 0.6rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .cred-title {
+    font-variation-settings: 'wdth' 100, 'wght' 700;
+    font-size: 1.1875rem;
+    text-transform: none;
+    letter-spacing: -0.01em;
+  }
+
+  .cred p {
+    color: var(--bone-2);
+    font-size: 0.9375rem;
+    line-height: 1.62;
+    max-width: 60ch;
+  }
+
+  .cred-note {
+    text-transform: none;
+    letter-spacing: 0.02em;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+
+  @media (max-width: 980px) {
+    .two-col,
+    .bill {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    .bill-fig {
+      max-width: 320px;
+    }
+    .values {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 620px) {
+    .values,
+    .craft {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

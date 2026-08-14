@@ -1,0 +1,196 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Footer from '../components/Footer.astro';
+import heroImg from '../assets/pages/hero-services.webp';
+import matKitchen from '../assets/gen/mat-kitchen.webp';
+import matBathroom from '../assets/gen/mat-bathroom.webp';
+import matDecking from '../assets/gen/mat-decking.webp';
+import matFlooring from '../assets/gen/mat-flooring.webp';
+import matTiling from '../assets/gen/mat-tiling.webp';
+import grannyImg from '../assets/projects/ba/granny-after.webp';
+import { serviceDetail } from '../data/pages.js';
+
+const imgs = {
+  'kitchen-renovations': matKitchen,
+  'bathroom-renovations': matBathroom,
+  decking: matDecking,
+  flooring: matFlooring,
+  tiling: matTiling,
+  'granny-flats': grannyImg,
+};
+---
+
+<Base
+  title="Services | Kitchens, bathrooms, decking, flooring, tiling and granny flats across Sydney"
+  description="Six services under one contract. Kitchen and bathroom renovations, decking, flooring, tiling and granny flats, across Sydney, with a fixed price agreed before we start."
+>
+  <Header />
+  <main id="main">
+    <PageHero
+      eyebrow='<span class="annot-signal">Services</span> · Sydney wide'
+      lines={['Everything', 'under <em>one</em>', 'contract.']}
+      lede="These trades overlap on most jobs. Running them under one contract is why the tiler turns up when the cabinetmaker is finished rather than a week later."
+      image={heroImg}
+      imageAlt="Building materials laid out in a grid, marble, merbau, oak, porcelain tile and a steel square"
+      cta={{ label: 'Request a quote', href: '/contact' }}
+      secondary={{ label: 'See our process', href: '/process' }}
+    />
+
+    {serviceDetail.map((s, i) => (
+      <section class={`svc-row section ${i % 2 ? 'is-alt' : ''}`} id={s.slug} data-reveal>
+        <div class="shell">
+          <div class="setout">
+            <span class="annot">{String(i + 1).padStart(2, '0')} / {s.name}</span>
+            <span class="setout-rule"></span>
+          </div>
+
+          <div class="svc-grid">
+            <figure class="svc-fig rise">
+              <Image
+                src={imgs[s.slug]}
+                alt={`${s.name} detail`}
+                widths={[500, 900, 1400]}
+                sizes="(max-width: 980px) 100vw, 45vw"
+                quality={80}
+              />
+            </figure>
+
+            <div class="svc-body">
+              <h2 class="display display-m rise">{s.name}</h2>
+              <p class="lede rise rise-2">{s.lead}</p>
+              <p class="svc-text rise rise-3">{s.body}</p>
+
+              <ul class="svc-list rise rise-3">
+                {s.includes.map((inc) => (
+                  <li>{inc}</li>
+                ))}
+              </ul>
+
+              <p class="svc-note annot rise rise-4">{s.note}</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    ))}
+
+    <CtaBand
+      title="Not sure which of these you need?"
+      body="Most jobs turn out to be two or three of them at once. Tell us about the room and we will work out the scope with you."
+    />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .svc-row {
+    padding-block: clamp(3rem, 6vw, 5rem);
+    border-top: 1px solid var(--line);
+  }
+
+  .svc-grid {
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+
+  .svc-row.is-alt .svc-grid {
+    grid-template-columns: 1.15fr 0.85fr;
+  }
+
+  .svc-row.is-alt .svc-fig {
+    order: 2;
+  }
+
+  .svc-fig {
+    margin: 0;
+    overflow: hidden;
+    border-left: 2px solid var(--signal);
+  }
+
+  .svc-fig :global(img) {
+    width: 100%;
+    height: clamp(260px, 32vw, 460px);
+    object-fit: cover;
+    transition: transform 1.2s var(--ease);
+  }
+
+  .svc-row:hover .svc-fig :global(img) {
+    transform: scale(1.04);
+  }
+
+  .svc-body {
+    display: grid;
+    gap: 1.125rem;
+    align-content: center;
+  }
+
+  .svc-body .lede {
+    max-width: 46ch;
+  }
+
+  .svc-text {
+    color: var(--bone-2);
+    font-size: 0.9375rem;
+    line-height: 1.62;
+    max-width: 58ch;
+  }
+
+  .svc-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.5rem 1.5rem;
+    margin-top: 0.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .svc-list li {
+    font-size: 0.875rem;
+    color: var(--bone);
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .svc-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 5px;
+    height: 5px;
+    background: var(--signal);
+    transform: rotate(45deg);
+  }
+
+  .svc-note {
+    text-transform: none;
+    letter-spacing: 0.02em;
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: var(--muted);
+    padding-top: 0.75rem;
+    max-width: 60ch;
+  }
+
+  @media (max-width: 980px) {
+    .svc-grid,
+    .svc-row.is-alt .svc-grid {
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+    }
+    .svc-row.is-alt .svc-fig {
+      order: 0;
+    }
+  }
+
+  @media (max-width: 560px) {
+    .svc-list {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

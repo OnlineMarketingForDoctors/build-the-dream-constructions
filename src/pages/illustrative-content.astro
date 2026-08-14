@@ -1,0 +1,144 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { illustrativeRegister } from '../data/pages.js';
+
+const totalItems = illustrativeRegister.reduce((n, g) => n + g.items.length, 0);
+---
+
+<Base
+  title="Illustrative content register | Build The Dream Constructions"
+  description="Internal register of every piece of placeholder content on the site that needs replacing with real data before launch."
+>
+  <Header />
+  <main id="main" class="reg-main">
+    <section class="section">
+      <div class="shell">
+        <div class="setout">
+          <span class="annot annot-signal">Internal · not linked from the site</span>
+          <span class="setout-rule is-in"></span>
+        </div>
+
+        <h1 class="display display-l">Placeholder<br />content register.</h1>
+        <p class="lede reg-lede">
+          {totalItems} items across the site are illustrative and need replacing with real
+          data before launch. This page is generated from the content files, so it stays in
+          step as things change. It is not linked from the navigation.
+        </p>
+
+        {illustrativeRegister.map((g, gi) => (
+          <div class="reg-group">
+            <h2 class="display reg-group-title">
+              <span class="annot annot-signal">{String(gi + 1).padStart(2, '0')}</span>
+              {g.group}
+            </h2>
+            <table class="reg-table">
+              <thead>
+                <tr>
+                  <th>Item</th>
+                  <th>Where</th>
+                  <th>Currently</th>
+                  <th>Needs</th>
+                </tr>
+              </thead>
+              <tbody>
+                {g.items.map((it) => (
+                  <tr>
+                    <td class="reg-what">{it.what}</td>
+                    <td class="reg-where">{it.where}</td>
+                    <td>{it.now}</td>
+                    <td class="reg-need">{it.need}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ))}
+
+        <div class="reg-launch">
+          <h2 class="display reg-group-title"><span class="annot annot-signal">Also</span> Before the site goes public</h2>
+          <ol class="reg-steps">
+            <li>Replace <code>Licence No. [TBC]</code> with the real number in <code>src/data/site.js</code></li>
+            <li>Remove the noindex meta tags from <code>src/layouts/Base.astro</code></li>
+            <li>Remove the <code>X-Robots-Tag</code> header from <code>vercel.json</code></li>
+            <li>Change <code>public/robots.txt</code> from <code>Disallow: /</code> to allow crawling</li>
+            <li>Set <code>RESEND_API_KEY</code> in Vercel so the quote form actually sends</li>
+            <li>Point <code>buildthedreamconstructions.com.au</code> at the Vercel project</li>
+            <li>Delete this page</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .reg-main { padding-top: 7rem; }
+  .reg-lede { max-width: 60ch; margin-top: 1.5rem; }
+
+  .reg-group { margin-top: clamp(2.5rem, 5vw, 4rem); }
+
+  .reg-group-title {
+    font-variation-settings: 'wdth' 104, 'wght' 700;
+    font-size: clamp(1.125rem, 1.8vw, 1.5rem);
+    text-transform: uppercase;
+    display: flex; align-items: baseline; gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .reg-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+    display: block;
+    overflow-x: auto;
+  }
+
+  .reg-table thead th {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 400;
+    padding: 0.6rem 1rem 0.6rem 0;
+    border-bottom: 1px solid var(--line-lift);
+    white-space: nowrap;
+  }
+
+  .reg-table td {
+    padding: 0.85rem 1rem 0.85rem 0;
+    border-bottom: 1px solid var(--line);
+    color: var(--bone-2);
+    vertical-align: top;
+    line-height: 1.55;
+    min-width: 12rem;
+  }
+
+  .reg-what { color: var(--bone); font-weight: 500; }
+  .reg-where { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
+  .reg-need { color: var(--signal); }
+
+  .reg-launch { margin-top: clamp(3rem, 6vw, 5rem); padding-top: 2rem; border-top: 1px solid var(--line-lift); }
+
+  .reg-steps { display: grid; gap: 0.75rem; counter-reset: s; max-width: 70ch; }
+
+  .reg-steps li {
+    color: var(--bone-2); font-size: 0.9375rem; line-height: 1.6;
+    padding-left: 2rem; position: relative; counter-increment: s;
+  }
+
+  .reg-steps li::before {
+    content: counter(s, decimal-leading-zero);
+    position: absolute; left: 0; top: 0.1em;
+    font-family: var(--mono); font-size: 0.75rem; color: var(--signal);
+  }
+
+  code {
+    font-family: var(--mono); font-size: 0.8125em;
+    background: var(--surface); padding: 0.15em 0.4em; color: var(--bone);
+  }
+</style>

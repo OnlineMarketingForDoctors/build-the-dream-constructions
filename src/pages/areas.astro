@@ -1,0 +1,199 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from '../components/Header.astro';
+import PageHero from '../components/PageHero.astro';
+import CtaBand from '../components/CtaBand.astro';
+import Footer from '../components/Footer.astro';
+import heroImg from '../assets/pages/hero-areas.webp';
+import { serviceAreas, business } from '../data/site.js';
+
+const total = serviceAreas.reduce((n, r) => n + r.suburbs.length, 0);
+---
+
+<Base
+  title="Areas We Service | Sydney wide renovations"
+  description={`Build The Dream Constructions covers ${total} suburbs across Sydney, from the Hills District to the Eastern Suburbs and out to the Blue Mountains.`}
+>
+  <Header />
+  <main id="main">
+    <PageHero
+      eyebrow='<span class="annot-signal">Service areas</span> · Sydney wide'
+      lines={['Sydney,', 'and out to', '<em>the edges.</em>']}
+      lede={`${total} suburbs across ten regions, run out of Parramatta. If yours is not listed, call and we will tell you straight away.`}
+      image={heroImg}
+      imageAlt="Aerial view of Sydney at dusk with suburban rooftops in the foreground"
+      cta={{ label: 'Request a quote', href: '/contact' }}
+      secondary={{ label: 'Call ' + business.phone, href: business.phoneHref }}
+      facts={[
+        { k: 'Suburbs', v: String(total) },
+        { k: 'Regions', v: String(serviceAreas.length) },
+        { k: 'Based in', v: business.suburb },
+      ]}
+    />
+
+    <section class="section" data-reveal>
+      <div class="shell">
+        <div class="setout">
+          <span class="annot">Find your suburb</span>
+          <span class="setout-rule"></span>
+        </div>
+
+        <div class="finder-wrap rise">
+          <div class="finder">
+            <label class="annot" for="suburb">Type your suburb</label>
+            <div class="finder-in">
+              <input id="suburb" type="search" placeholder="Start typing" autocomplete="off" spellcheck="false" />
+              <span class="finder-rule"></span>
+            </div>
+            <p class="finder-out annot" role="status" aria-live="polite"></p>
+          </div>
+          <p class="finder-note">
+            We are based in Parramatta, which is roughly the centre of the area we cover.
+            Travel time is the limit rather than distance, so the edges move a little
+            depending on the job.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {serviceAreas.map((r, i) => (
+      <section class="region" data-reveal>
+        <div class="shell region-in">
+          <div class="region-head">
+            <span class="annot region-n">{String(i + 1).padStart(2, '0')}</span>
+            <h2 class="display region-name">{r.region}</h2>
+            <span class="annot region-count">{r.suburbs.length} suburbs</span>
+          </div>
+          <ul class="region-list" data-region={r.region}>
+            {r.suburbs.map((s) => (
+              <li data-suburb={s.toLowerCase()}>{s}</li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    ))}
+
+    <CtaBand
+      title="Not on the list?"
+      body="Call us. If we can get a team to you we will say so, and if we cannot we will tell you that too rather than waste your time."
+    />
+  </main>
+  <Footer />
+</Base>
+
+<style>
+  .finder-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+  }
+
+  .finder { display: grid; gap: 0.6rem; max-width: 28rem; }
+  .finder-in { position: relative; }
+
+  .finder input {
+    width: 100%; background: none; border: 0;
+    border-bottom: 1px solid var(--line-lift);
+    padding: 0.7rem 0; color: var(--bone);
+    font-family: var(--display);
+    font-variation-settings: 'wdth' 104, 'wght' 600;
+    font-size: 1.5rem; text-transform: uppercase; letter-spacing: 0.01em;
+  }
+
+  .finder input::placeholder {
+    color: var(--muted); text-transform: none;
+    font-variation-settings: 'wdth' 100, 'wght' 400; letter-spacing: 0;
+  }
+
+  .finder input:focus { outline: none; }
+
+  .finder-rule {
+    position: absolute; left: 0; bottom: 0; height: 1px; width: 100%;
+    background: var(--signal); transform: scaleX(0); transform-origin: left;
+    transition: transform 0.45s var(--ease-snap);
+  }
+
+  .finder input:focus ~ .finder-rule { transform: scaleX(1); }
+
+  .finder-out { min-height: 1.2em; color: var(--bone-2); }
+  .finder-out.is-hit { color: var(--signal); }
+
+  .finder-note {
+    color: var(--bone-2); font-size: 0.9375rem; line-height: 1.62; max-width: 44ch;
+  }
+
+  .region { border-top: 1px solid var(--line); }
+
+  .region-in {
+    display: grid;
+    grid-template-columns: 16rem 1fr;
+    gap: clamp(1.5rem, 4vw, 4rem);
+    padding-block: clamp(2rem, 3.5vw, 3rem);
+    align-items: start;
+  }
+
+  .region.is-dim { opacity: 0.3; }
+
+  .region-head { display: grid; gap: 0.5rem; align-content: start; position: sticky; top: 7rem; }
+
+  .region-n { color: var(--signal); }
+
+  .region-name {
+    font-variation-settings: 'wdth' 106, 'wght' 750;
+    font-size: clamp(1.25rem, 1.9vw, 1.75rem);
+    text-transform: uppercase; letter-spacing: -0.01em; line-height: 1.05;
+  }
+
+  .region-count { color: var(--muted); }
+
+  .region-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(9rem, 1fr));
+    gap: 0.55rem 1.5rem;
+    padding-top: 0.35rem;
+  }
+
+  .region-list li {
+    font-size: 0.9375rem; color: var(--bone-2);
+    transition: color 0.25s var(--ease), opacity 0.25s var(--ease);
+  }
+
+  .region-list li.is-hit { color: var(--signal); }
+  .region-list li.is-off { opacity: 0.22; }
+
+  @media (max-width: 900px) {
+    .finder-wrap, .region-in { grid-template-columns: 1fr; }
+    .region-head { position: static; }
+  }
+</style>
+
+<script>
+  const input = document.getElementById('suburb');
+  const out = document.querySelector('.finder-out');
+  const regions = [...document.querySelectorAll('.region')];
+  const items = [...document.querySelectorAll('.region-list li')];
+
+  input?.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    if (!q) {
+      items.forEach((li) => li.classList.remove('is-hit', 'is-off'));
+      regions.forEach((r) => r.classList.remove('is-dim'));
+      out.textContent = '';
+      out.classList.remove('is-hit');
+      return;
+    }
+    let hits = 0, region = '';
+    items.forEach((li) => {
+      const m = li.dataset.suburb.includes(q);
+      li.classList.toggle('is-hit', m);
+      li.classList.toggle('is-off', !m);
+      if (m) { hits += 1; if (!region) region = li.closest('.region-list').dataset.region; }
+    });
+    regions.forEach((r) => r.classList.toggle('is-dim', !r.querySelector('li.is-hit')));
+    out.classList.toggle('is-hit', hits > 0);
+    out.textContent = hits
+      ? `Yes, we cover that. ${hits === 1 ? region : `${hits} matches`}`
+      : 'Not on the list. Give us a call and we will check.';
+  });
+</script>

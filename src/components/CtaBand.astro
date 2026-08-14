@@ -1,0 +1,100 @@
+---
+import { Image } from 'astro:assets';
+import plaster from '../assets/gen/texture-plaster.webp';
+import { business } from '../data/site.js';
+
+const {
+  title = 'Tell us about the room.',
+  body = 'We will come and measure it, then send a fixed written quote with the scope itemised. No cost, no obligation.',
+} = Astro.props;
+---
+
+<section class="ctab section" data-reveal>
+  <div class="ctab-bg" aria-hidden="true">
+    <Image src={plaster} alt="" widths={[1200, 2000]} sizes="100vw" quality={72} />
+    <span class="ctab-veil"></span>
+  </div>
+
+  <div class="shell ctab-in">
+    <div>
+      <h2 class="display display-l rise">{title}</h2>
+      <p class="lede rise rise-2">{body}</p>
+    </div>
+
+    <div class="ctab-right rise rise-3">
+      <div class="ctab-actions">
+        <a class="btn" href="/contact"><span>Request a quote</span><i class="btn-arrow"></i></a>
+        <a class="btn btn-ghost" href={business.phoneHref}><span>{business.phone}</span><i class="btn-arrow"></i></a>
+      </div>
+      <p class="annot ctab-hours">{business.hours}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ctab {
+    position: relative;
+    overflow: hidden;
+    border-top: 1px solid var(--line);
+  }
+
+  .ctab-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .ctab-bg :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ctab-veil {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      95deg,
+      var(--ink) 20%,
+      color-mix(in srgb, var(--ink) 88%, transparent) 60%,
+      color-mix(in srgb, var(--ink) 74%, transparent) 100%
+    );
+  }
+
+  .ctab-in {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: clamp(2rem, 6vw, 5rem);
+    align-items: end;
+  }
+
+  .ctab-in .lede {
+    max-width: 44ch;
+    margin-top: 1.25rem;
+  }
+
+  .ctab-right {
+    display: grid;
+    gap: 1.25rem;
+    justify-items: start;
+  }
+
+  .ctab-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .ctab-hours {
+    color: var(--muted);
+  }
+
+  @media (max-width: 860px) {
+    .ctab-in {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+  }
+</style>
