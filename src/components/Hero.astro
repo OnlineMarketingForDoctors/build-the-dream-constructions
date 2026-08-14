@@ -106,22 +106,27 @@ const facts = [
   .hero-scrim {
     position: absolute;
     inset: 0;
-    /* Held dark on the left for the headline, opened up on the right so the
-       photograph keeps its colour. */
+    /* The dusk photograph is already dark, so the scrim only needs to hold
+       the left side down enough for the headline rather than dim the whole
+       frame. */
     background: linear-gradient(
       100deg,
-      var(--ink) 6%,
-      color-mix(in srgb, var(--ink) 84%, transparent) 38%,
-      color-mix(in srgb, var(--ink) 44%, transparent) 68%,
-      color-mix(in srgb, var(--ink) 14%, transparent) 100%
+      color-mix(in srgb, var(--ink) 88%, transparent) 4%,
+      color-mix(in srgb, var(--ink) 68%, transparent) 36%,
+      color-mix(in srgb, var(--ink) 30%, transparent) 66%,
+      color-mix(in srgb, var(--ink) 6%, transparent) 100%
     );
   }
 
   .hero-scrim-2 {
     position: absolute;
     inset: auto 0 0 0;
-    height: 55%;
-    background: linear-gradient(to top, var(--ink) 2%, transparent 100%);
+    height: 46%;
+    background: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--ink) 86%, transparent) 2%,
+      transparent 100%
+    );
   }
 
   .hero-in {
@@ -261,8 +266,8 @@ const facts = [
     .hero-scrim {
       background: linear-gradient(
         180deg,
-        color-mix(in srgb, var(--ink) 72%, transparent) 0%,
-        color-mix(in srgb, var(--ink) 55%, transparent) 45%,
+        color-mix(in srgb, var(--ink) 58%, transparent) 0%,
+        color-mix(in srgb, var(--ink) 42%, transparent) 45%,
         var(--ink) 96%
       );
     }
