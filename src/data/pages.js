@@ -279,8 +279,14 @@ export const illustrativeRegister = [
   {
     group: 'Service pages',
     items: [
-      { what: 'Kitchen duration', where: '/services', now: 'About 18 working days', need: 'Confirm or correct' },
-      { what: 'Granny flat imagery', where: '/services, /projects', now: 'Generated, no granny flat has been photographed', need: 'A real granny flat photograph' },
+      { what: 'Kitchen duration', where: '/services, /services/kitchen-renovations', now: 'About 18 working days on site, four to six weeks cabinetry lead time', need: 'Confirm or correct' },
+      { what: 'Bathroom duration and cost', where: '/services/bathroom-renovations', now: 'About 15 working days, $25,000 to $45,000', need: 'The real range and duration Bill quotes' },
+      { what: 'Deck build time', where: '/services/decking', now: 'Five to eight working days', need: 'Confirm or correct' },
+      { what: 'Floor install time', where: '/services/flooring', now: 'Three to five working days', need: 'Confirm or correct' },
+      { what: 'Granny flat build time', where: '/services/granny-flats', now: 'About 16 weeks on site', need: 'Confirm or correct' },
+      { what: 'Before and after sliders', where: 'All six service pages', now: 'The same illustrative pairs used on /projects, flagged on each page', need: 'Real before and after photographs per trade' },
+      { what: 'Also covered lists', where: 'All six service pages', now: 'Drawn from the keyword list in the structure document', need: 'Confirm each item is something you actually take on, particularly commercial flooring and pool surrounds' },
+      { what: 'Granny flat imagery', where: '/services, /projects, /services/granny-flats', now: 'Generated, no granny flat has been photographed', need: 'A real granny flat photograph' },
     ],
   },
   {

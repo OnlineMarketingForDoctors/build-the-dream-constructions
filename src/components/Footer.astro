@@ -1,7 +1,8 @@
 ---
 import { Image } from 'astro:assets';
 import mark from '../assets/brand/logo-mark.png';
-import { business, services } from '../data/site.js';
+import { business } from '../data/site.js';
+import { servicePages } from '../data/servicePages.js';
 const year = 2026;
 ---
 
@@ -18,9 +19,10 @@ const year = 2026;
       <nav class="ftr-nav" aria-label="Services">
         <h2 class="annot">Services</h2>
         <ul>
-          {services.map((s) => (
-            <li><a href={`/services#${s.slug}`}>{s.name}</a></li>
+          {servicePages.map((s) => (
+            <li><a href={`/services/${s.slug}`}>{s.name}</a></li>
           ))}
+          <li><a href="/services">All services</a></li>
         </ul>
       </nav>
 

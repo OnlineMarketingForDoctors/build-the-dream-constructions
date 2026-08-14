@@ -30,7 +30,7 @@ const map = {
   <ul class="svc-grid rise rise-3">
     {services.map((s, i) => (
       <li class={`tile tile-${i + 1}`}>
-        <a href={`/services#${s.slug}`} class="tile-a">
+        <a href={`/services/${s.slug}`} class="tile-a">
           <div class="tile-media">
             <Image
               src={map[s.slug]}

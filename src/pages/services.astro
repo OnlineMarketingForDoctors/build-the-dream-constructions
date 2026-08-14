@@ -59,17 +59,21 @@ const alts = {
 
           <div class="svc-grid">
             <figure class="svc-fig rise">
-              <Image
-                src={imgs[s.slug]}
-                alt={alts[s.slug]}
-                widths={[500, 900, 1400]}
-                sizes="(max-width: 980px) 100vw, 45vw"
-                quality={80}
-              />
+              <a href={`/services/${s.slug}`} tabindex="-1" aria-hidden="true">
+                <Image
+                  src={imgs[s.slug]}
+                  alt={alts[s.slug]}
+                  widths={[500, 900, 1400]}
+                  sizes="(max-width: 980px) 100vw, 45vw"
+                  quality={80}
+                />
+              </a>
             </figure>
 
             <div class="svc-body">
-              <h2 class="display display-m rise">{s.name}</h2>
+              <h2 class="display display-m rise">
+                <a class="svc-link" href={`/services/${s.slug}`}>{s.name}</a>
+              </h2>
               <p class="lede rise rise-2">{s.lead}</p>
               <p class="svc-text rise rise-3">{s.body}</p>
 
@@ -80,6 +84,10 @@ const alts = {
               </ul>
 
               <p class="svc-note annot rise rise-4">{s.note}</p>
+
+              <a class="btn btn-ghost svc-cta rise rise-4" href={`/services/${s.slug}`}>
+                <span>{s.name}, in full</span><i class="btn-arrow"></i>
+              </a>
             </div>
           </div>
         </div>
@@ -176,6 +184,20 @@ const alts = {
     height: 5px;
     background: var(--signal);
     transform: rotate(45deg);
+  }
+
+  .svc-link {
+    transition: color 0.3s var(--ease);
+  }
+
+  .svc-link:hover,
+  .svc-link:focus-visible {
+    color: var(--signal);
+  }
+
+  .svc-cta {
+    justify-self: start;
+    margin-top: 0.5rem;
   }
 
   .svc-note {
