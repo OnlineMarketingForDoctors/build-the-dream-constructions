@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import BackToTop from '../components/BackToTop.astro';
 import { business } from '../data/site.js';
 
 const { title, description } = Astro.props;
@@ -43,6 +44,7 @@ const schema = {
   <body>
     <a class="skip" href="#main">Skip to content</a>
     <slot />
+    <BackToTop />
 
     <style>
       .skip {
