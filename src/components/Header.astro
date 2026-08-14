@@ -11,7 +11,7 @@ const nav = [
   { label: 'Areas', href: '/areas' },
   { label: 'Reviews', href: '/testimonials' },
   { label: 'FAQs', href: '/faqs' },
-  { label: 'Inspiration centre', href: '/blog' },
+  { label: 'Blog', href: '/blog' },
 ];
 ---
 
@@ -308,9 +308,10 @@ const nav = [
     color: var(--bone-2);
   }
 
-  /* Narrow desktop: drop the phone number before the nav starts wrapping.
-     Eight nav items need more room than five did. */
-  @media (max-width: 1560px) {
+  /* Narrow desktop: drop the phone number before the nav starts crowding the
+     quote button. Shortening the last nav label bought back enough room to
+     keep the number visible down to 1340 rather than 1560. */
+  @media (max-width: 1340px) {
     .tel {
       display: none;
     }
