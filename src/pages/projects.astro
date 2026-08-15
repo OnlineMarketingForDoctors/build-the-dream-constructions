@@ -17,7 +17,6 @@ const pickG = (prefix) =>
     .map((k) => g[k]);
 
 const mdlmSrc = pickG('mdlm');
-const omdSrc = pickG('omd');
 
 const mdlmAlts = [
   'Open plan living with the mitred stone island and ocean outlook',
@@ -30,23 +29,25 @@ const mdlmAlts = [
   'Balcony seating with the beachfront outlook',
 ];
 
-const omdAlts = [
-  ['Reception and waiting area', 'Visualisation'],
-  ['Panelled meeting room in deep green', 'Visualisation'],
-  ['Dining and meeting area with the arched joinery', 'Visualisation'],
-  ['The same room completed, with the arch and cane seating built', 'Completed'],
-  ['Laundry with custom joinery and patterned floor tiling', 'Visualisation'],
-  ['Bathroom with large format tiling and patterned floor', 'Visualisation'],
-  ['Completed meeting room with pendant and cane chairs', 'Completed'],
-  ['Completed seating nook by the round window', 'Completed'],
+// Explicit order rather than the filename sort, so the arched joinery in the
+// dining and meeting area leads the gallery.
+const omdOrder = [
+  ['omd-03-dining', 'Dining and meeting area with the arched joinery and custom shelving'],
+  ['omd-01-reception', 'Reception and waiting area with panelled walls and black joinery'],
+  ['omd-02-meeting', 'Panelled meeting room in deep green'],
+  ['omd-04-dining-built', 'The dining and meeting area looking back toward the arch'],
+  ['omd-05-laundry', 'Laundry with custom joinery and patterned floor tiling'],
+  ['omd-06-bathroom', 'Bathroom with large format tiling and a patterned floor'],
+  ['omd-07-meeting-built', 'Meeting room with the pendant and cane chairs'],
+  ['omd-08-seating', 'Seating nook by the round window'],
 ];
 
 const galleries = {
   'maison-de-la-mer': mdlmSrc.map((src, i) => ({ src, alt: mdlmAlts[i] || 'Maison De La Mer interior', tag: 'Completed' })),
-  'commercial-office-fit-out': omdSrc.map((src, i) => ({
-    src,
-    alt: (omdAlts[i] && omdAlts[i][0]) || 'Office fit out',
-    tag: (omdAlts[i] && omdAlts[i][1]) || 'Completed',
+  'commercial-office-fit-out': omdOrder.map(([file, alt]) => ({
+    src: g[`../assets/projects/gallery/${file}.webp`],
+    alt,
+    tag: 'Completed',
   })),
 };
 
@@ -67,7 +68,7 @@ const keyFor = {
 
 <Base
   title="Projects | Build The Dream Constructions"
-  description="Completed renovation work across Sydney and beyond, including a full twelve month apartment renovation and a commercial office fit out shown alongside its approved renders."
+  description="Completed renovation work across Sydney and beyond, including a full twelve month apartment renovation and a commercial office fit out built from approved renders."
 >
   <Header />
   <main id="main">

@@ -348,7 +348,7 @@ export const realProjects = [
     ],
     blurb: [
       'A Sydney office taken from design visualisation through to completed fit out. Panelled meeting rooms, patterned floor tiling, a full bathroom and custom joinery throughout.',
-      'The gallery below mixes the approved renders with photographs of the finished rooms, each one labelled so you can tell which is which. It is the fairest way to show how closely a build tracks its drawings, and it is worth comparing the third and fourth images, which are the same room before and after it existed.',
+      'The gallery below is the finished fit out. It was built from approved renders, and the rooms were handed over close enough to those drawings that the two are hard to tell apart, which is the point of doing the documentation properly before anyone picks up a tool.',
     ],
     challenge:
       'Commercial fit outs run to a fixed handover date because the tenant has staff arriving. The tiling and joinery were sequenced to run in parallel in different rooms rather than end to end, which is the only way that date holds.',
